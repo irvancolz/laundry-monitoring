@@ -1,5 +1,6 @@
-import { Button, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import styles from "./page.module.css";
+import Button from "@/comps/button";
 
 export default function Home() {
   return (
@@ -7,7 +8,7 @@ export default function Home() {
       <Typography variant="h1" color="primary">
         hello world
       </Typography>
-      <Button variant="contained">hello world</Button>
+      <Button>hello world</Button>
     </div>
   );
 }
