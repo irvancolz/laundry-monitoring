@@ -25,9 +25,9 @@ export default function Table(props: TableProps) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {rows.map((row, i) => (
             <TableRow
-              key={row.name}
+              key={i}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               {headers.map((col, j) => {

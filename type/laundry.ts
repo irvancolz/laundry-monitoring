@@ -4,7 +4,7 @@ export type Order = {
   status: LaundryStatus;
 } & OrderRequest;
 
-export type LaundryType = "express" | "regular";
+export type LaundryType = string;
 
 export type LaundryStatus = "finished" | "on process";
 
@@ -24,6 +24,16 @@ export type LaundryBranch = {
   id: string;
   name: string;
   code: string;
+  created_at: string;
+  created_by: string;
+};
+
+export type LaundryService = {
+  id: string;
+  name: string;
+  code: string;
+  price_per_kg: number;
+  service_time_hour: number;
   created_at: string;
   created_by: string;
 };

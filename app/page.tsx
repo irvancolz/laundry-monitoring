@@ -7,13 +7,14 @@ import Topbar from "@/comps/topbar";
 import { Order } from "@/type/laundry";
 import { FilterAlt, LocalLaundryServiceOutlined } from "@mui/icons-material";
 import { Box, Paper, Stack, Tab, Tabs } from "@mui/material";
+import { redirect } from "next/navigation";
 import { ReactNode, useState } from "react";
 
 const data: Order[] = [
   {
     id: "ORD001",
     customer_name: "John Doe",
-    type: "express",
+    type: "Delicate Fabrics",
     status: "on process",
     weight: 5.2,
     origin: "Branch A",
@@ -22,11 +23,12 @@ const data: Order[] = [
     process_id: "PROC001",
     price: 52000,
     notes: "Handle with care, customer requested next-day delivery.",
+    created_by: "admin",
   },
   {
     id: "ORD002",
     customer_name: "Jane Smith",
-    type: "regular",
+    type: "Dry Cleaning",
     status: "finished",
     weight: 3.5,
     origin: "Branch B",
@@ -34,11 +36,12 @@ const data: Order[] = [
     finish_expectation: "2024-12-12T14:25:45Z",
     process_id: "PROC002",
     price: 35000,
+    created_by: "admin",
   },
   {
     id: "ORD003",
     customer_name: "Michael Johnson",
-    type: "express",
+    type: "Iron Only",
     status: "finished",
     weight: 7.8,
     origin: "Branch C",
@@ -47,11 +50,12 @@ const data: Order[] = [
     process_id: "PROC003",
     price: 78000,
     notes: "Customer prefers pick-up from the branch.",
+    created_by: "admin",
   },
   {
     id: "ORD004",
     customer_name: "Emily Davis",
-    type: "regular",
+    type: "Iron Only",
     status: "on process",
     weight: 4.2,
     origin: "Branch A",
@@ -60,11 +64,13 @@ const data: Order[] = [
     process_id: "PROC004",
     price: 42000,
     notes: "Customer requested additional ironing service.",
+    created_by: "admin",
   },
+
   {
     id: "ORD005",
     customer_name: "Chris Brown",
-    type: "express",
+    type: "Express Wash",
     status: "on process",
     weight: 6.3,
     origin: "Branch D",
@@ -72,6 +78,7 @@ const data: Order[] = [
     finish_expectation: "2024-12-12T13:20:15Z",
     process_id: "PROC005",
     price: 63000,
+    created_by: "admin",
   },
 ];
 
@@ -156,7 +163,10 @@ export default function Home() {
             </CustomTabPanel>
           </Paper>
         </Box>
-        <Button startIcon={<LocalLaundryServiceOutlined fontSize="inherit" />}>
+        <Button
+          startIcon={<LocalLaundryServiceOutlined fontSize="inherit" />}
+          onClick={() => redirect("/create")}
+        >
           Tambah Pesanan
         </Button>
       </Stack>
