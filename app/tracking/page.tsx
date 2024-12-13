@@ -13,9 +13,9 @@ import {
   StepLabel,
   Stepper,
 } from "@mui/material";
-import notFoundImg from "../../public/empty-result.png";
 import { Iron, Search } from "@mui/icons-material";
 import Text from "@/comps/text";
+import OrderNotFound from "@/comps/order-not-found";
 
 export default function Page() {
   const result = {
@@ -56,33 +56,7 @@ export default function Page() {
           </Button>
         </Stack>
         <Stack flexGrow={1} justifyContent="center" alignContent="center">
-          {result == null && (
-            <Box>
-              <div
-                style={{
-                  aspectRatio: 163 / 138,
-                  height: "138px",
-                  marginInline: "auto",
-                }}
-              >
-                <img src={notFoundImg.src} alt="order not found" />
-              </div>
-              <div>
-                <Text
-                  variant="h2"
-                  fontSize="1rem"
-                  textAlign="center"
-                  fontWeight={700}
-                >
-                  Pesanan Tidak Ditemukan
-                </Text>
-                <Text textAlign="center">
-                  periksa nomor pesanan anda atau hubungi admin untuk informasi
-                  lebih lanjut
-                </Text>
-              </div>
-            </Box>
-          )}
+          {result == null && <OrderNotFound />}
           {JSON.stringify(result) == "{}" && null}
           {JSON.stringify(result) != "{}" && result != null && (
             <Box>

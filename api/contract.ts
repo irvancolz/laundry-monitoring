@@ -19,6 +19,8 @@ export interface LaundryServiceApiContract {
 export interface OrderContract {
   getAll: () => Promise<Order[]>;
   create: (order: OrderRequest) => Promise<Order>;
+  update: (order: Order) => Promise<Order>;
+  get: (id: string) => Promise<Order | null>;
 }
 
 export interface LaundryBranchApiContract {

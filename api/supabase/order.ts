@@ -18,6 +18,40 @@ async function create(order: OrderRequest): Promise<Order> {
   };
 }
 
+async function get(id: string): Promise<Order | null> {
+  return {
+    id: "ORD001",
+    customer_name: "John Doe",
+    type: "IRO003",
+    status: "on process",
+    weight: 5.2,
+    origin: "WSL004",
+    created_at: "2024-12-10T10:15:30Z",
+    finish_expectation: "2024-12-11T10:15:30Z",
+    process_id: "PROC001",
+    price: 52000,
+    notes: "Handle with care, customer requested next-day delivery.",
+    created_by: "admin",
+  };
+}
+
+async function update(order: Order): Promise<Order> {
+  return {
+    id: "ORD001",
+    customer_name: "John Doe",
+    type: "Delicate Fabrics",
+    status: "on process",
+    weight: 5.2,
+    origin: "Branch A",
+    created_at: "2024-12-10T10:15:30Z",
+    finish_expectation: "2024-12-11T10:15:30Z",
+    process_id: "PROC001",
+    price: 52000,
+    notes: "Handle with care, customer requested next-day delivery.",
+    created_by: "admin",
+  };
+}
+
 async function getAll(): Promise<Order[]> {
   const data: Order[] = [
     {
@@ -94,4 +128,4 @@ async function getAll(): Promise<Order[]> {
   return data;
 }
 
-export const orderApi: OrderContract = { create, getAll };
+export const orderApi: OrderContract = { create, getAll, update, get };
