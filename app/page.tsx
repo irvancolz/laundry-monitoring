@@ -165,7 +165,7 @@ export default function Home() {
         </Box>
         <Button
           startIcon={<LocalLaundryServiceOutlined fontSize="inherit" />}
-          onClick={() => redirect("/create")}
+          onClick={() => redirect("/order/create")}
         >
           Tambah Pesanan
         </Button>

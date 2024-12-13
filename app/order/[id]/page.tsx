@@ -2,6 +2,8 @@
 import { api } from "@/api";
 import OrderDetail from "@/comps/order-detail";
 import OrderNotFound from "@/comps/order-not-found";
+import OrderTracking from "@/comps/order-tracking";
+import Text from "@/comps/text";
 import Topbar from "@/comps/topbar";
 import { Order } from "@/type/laundry";
 import { ArrowBack, Menu } from "@mui/icons-material";
@@ -43,8 +45,19 @@ export default function Page() {
           <Menu />
         </IconButton>
       </Stack>
-      <Stack>
-        <OrderDetail order={order} />
+      <Stack sx={{ gap: "2rem", marginBlock: "3rem" }}>
+        <div>
+          <Text sx={{ marginBottom: "1rem", fontWeight: 700 }}>
+            Detail Pesanan
+          </Text>
+          <OrderDetail order={order} />
+        </div>
+        <div>
+          <Text sx={{ marginBottom: "1rem", fontWeight: 700 }}>
+            Lacak Pesanan
+          </Text>
+          <OrderTracking order_id={id} />
+        </div>
       </Stack>
     </>
   );
