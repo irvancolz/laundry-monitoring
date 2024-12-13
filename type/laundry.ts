@@ -37,3 +37,25 @@ export type LaundryService = {
   created_at: string;
   created_by: string;
 };
+
+export type OrderProgress = {
+  id: string;
+  order_id: string;
+  task_id: string;
+  status: LaundryStatus;
+  created_at: string;
+  updated_at?: string | null;
+};
+
+export type OrderTask = {
+  id: string;
+  order: number;
+  name: string;
+  description: string;
+  created_at: string;
+  created_by: string;
+};
+
+// used in tracking section
+export type OrderTaskProgress = OrderProgress &
+  Pick<OrderTask, "description" | "name" | "order">;

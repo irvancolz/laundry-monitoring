@@ -1,4 +1,9 @@
-import { Order, OrderRequest } from "@/type/laundry";
+import {
+  Order,
+  OrderProgress,
+  OrderRequest,
+  OrderTaskProgress,
+} from "@/type/laundry";
 import { OrderContract } from "../contract";
 
 async function create(order: OrderRequest): Promise<Order> {
@@ -128,4 +133,83 @@ async function getAll(): Promise<Order[]> {
   return data;
 }
 
-export const orderApi: OrderContract = { create, getAll, update, get };
+async function getProgress(params: string): Promise<OrderTaskProgress[]> {
+  return [
+    {
+      id: "PROG001",
+      order_id: "ORD123",
+      task_id: "TASK001",
+      status: "finished",
+      created_at: "2024-12-10T09:05:00Z",
+      updated_at: "2024-12-10T09:10:00Z",
+      name: "Order Received",
+      description: "The order has been received and logged into the system.",
+      order: 1,
+    },
+    {
+      id: "PROG002",
+      order_id: "ORD123",
+      task_id: "TASK002",
+      status: "on process",
+      created_at: "2024-12-10T09:30:00Z",
+      updated_at: "2024-12-10T10:15:00Z",
+      name: "Clothes Sorted",
+      description:
+        "The clothes have been sorted based on color and fabric type.",
+      order: 2,
+    },
+    {
+      id: "PROG003",
+      order_id: "ORD123",
+      task_id: "TASK003",
+      status: "on process",
+      created_at: "2024-12-10T10:20:00Z",
+      updated_at: "2024-12-10T11:45:00Z",
+      name: "Clothes Washed",
+      description: "The clothes have been washed using the selected service.",
+      order: 3,
+    },
+    {
+      id: "PROG004",
+      order_id: "ORD123",
+      task_id: "TASK004",
+      status: "on process",
+      created_at: "2024-12-10T12:00:00Z",
+      updated_at: null,
+      name: "Clothes Dried",
+      description:
+        "The washed clothes have been dried and are ready for ironing.",
+      order: 4,
+    },
+    {
+      id: "PROG005",
+      order_id: "ORD123",
+      task_id: "TASK005",
+      status: "on process",
+      created_at: "2024-12-10T13:00:00Z",
+      updated_at: null,
+      name: "Clothes Ironed",
+      description: "The clothes have been ironed and neatly folded.",
+      order: 5,
+    },
+    {
+      id: "PROG006",
+      order_id: "ORD123",
+      task_id: "TASK006",
+      status: "on process",
+      created_at: "2024-12-10T14:30:00Z",
+      updated_at: null,
+      name: "Order Completed",
+      description: "The order is ready for pickup or delivery to the customer.",
+      order: 6,
+    },
+  ];
+}
+
+export const orderApi: OrderContract = {
+  create,
+  getAll,
+  update,
+  get,
+  getProgress,
+};
