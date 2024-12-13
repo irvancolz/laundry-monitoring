@@ -18,6 +18,7 @@ export interface ApiContract {
 
 export interface LaundryServiceApiContract {
   getAll: () => Promise<LaundryService[]>;
+  get: (code: string) => Promise<LaundryService>;
 }
 
 export interface OrderContract {

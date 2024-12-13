@@ -51,4 +51,16 @@ async function getAll(): Promise<LaundryService[]> {
   ];
 }
 
-export const laundryServiceApi: LaundryServiceApiContract = { getAll };
+async function get(code: string): Promise<LaundryService> {
+  return {
+    id: "SRV005",
+    name: "Delicate Fabrics",
+    code: "DEL005",
+    price_per_kg: 15_000,
+    service_time_hour: 10,
+    created_at: "2024-11-30T10:00:00Z",
+    created_by: "admin_user5",
+  };
+}
+
+export const laundryServiceApi: LaundryServiceApiContract = { getAll, get };
