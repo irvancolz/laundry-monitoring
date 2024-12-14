@@ -1,6 +1,5 @@
 export type Order = {
   id: string;
-  process_id: string;
   status: LaundryStatus;
 } & OrderRequest;
 
@@ -14,7 +13,8 @@ export type OrderRequest = {
   customer_name: string;
   created_at: string;
   finish_expectation: string;
-  weight: number;
+  weight?: number;
+  qty?: number;
   price: number;
   notes?: string;
   created_by: string;
@@ -24,15 +24,17 @@ export type LaundryBranch = {
   id: string;
   name: string;
   code: string;
+  address: string;
   created_at: string;
   created_by: string;
 };
 
 export type LaundryService = {
   id: string;
+  pricing_type: "weight" | "piece";
   name: string;
   code: string;
-  price_per_kg: number;
+  price: number;
   service_time_hour: number;
   created_at: string;
   created_by: string;

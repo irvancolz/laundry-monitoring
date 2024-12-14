@@ -1,3 +1,5 @@
+"use server";
+import { createClient } from "@supabase/supabase-js";
 import { ApiContract } from "../contract";
 import { branchApi } from "./branch";
 import { orderApi } from "./order";
@@ -10,3 +12,8 @@ export const supabaseApi: ApiContract = {
   order: orderApi,
   orderTask: orderTaskApi,
 };
+
+export const supabase = createClient(
+  process.env.NEXT_PRIVATE_SUPABASE_URL!,
+  process.env.NEXT_PRIVATE_SUPABASE_ANON_KEY!
+);

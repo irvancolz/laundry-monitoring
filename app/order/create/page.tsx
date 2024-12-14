@@ -24,7 +24,7 @@ export default function Page() {
   const [branch, setBranch] = useState<Option[]>([]);
   const [services, setServices] = useState<LaundryService[]>([]);
   const [service, setService] = useState<LaundryService>();
-  const totalPrice = (data.weight || 0) * (service?.price_per_kg || 0);
+  const totalPrice = (data.weight || 0) * (service?.price || 0);
 
   function resetForm() {
     setData(
@@ -56,7 +56,15 @@ export default function Page() {
     setData((prev) => ({
       ...prev,
       weight: weight,
-      price: weight * (service?.price_per_kg || 0),
+      price: weight * (service?.price || 0),
+    }));
+  }
+
+  function handleQtyChange(qty: number) {
+    setData((prev) => ({
+      ...prev,
+      qty: qty,
+      price: qty * (service?.price || 0),
     }));
   }
 
@@ -153,19 +161,31 @@ export default function Page() {
             />
           </Stack>
           <Stack direction="row" justifyContent="space-between" gap="1rem">
-            <TextInput
-              label="berat"
-              type="number"
-              onChange={(e) =>
-                handleWeightChange(e.target.value as unknown as number)
-              }
-              value={data.weight}
-              required
-            />
+            {service?.pricing_type == "weight" ? (
+              <TextInput
+                label="berat"
+                type="number"
+                onChange={(e) =>
+                  handleWeightChange(e.target.value as unknown as number)
+                }
+                value={data.weight}
+                required
+              />
+            ) : (
+              <TextInput
+                label="jumlah"
+                type="number"
+                onChange={(e) =>
+                  handleQtyChange(e.target.value as unknown as number)
+                }
+                value={data.weight}
+                required
+              />
+            )}
             <TextInput
               label="harga"
               type="number"
-              value={service?.price_per_kg}
+              value={service?.price}
               disabled
             />
           </Stack>
