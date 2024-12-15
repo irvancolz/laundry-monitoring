@@ -41,6 +41,14 @@ export type LaundryService = {
   created_by: string;
 };
 
+export type LaundryServiceTask = {
+  id: number;
+  service_id: number;
+  task_id: number;
+  created_at: string;
+  created_by: string;
+};
+
 export type OrderProgress = {
   id: string;
   order_id: string;
