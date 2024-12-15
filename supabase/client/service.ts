@@ -1,5 +1,5 @@
 import { LaundryService } from "@/type/laundry";
-import { LaundryServiceApiContract } from "../contract";
+import { LaundryServiceApiContract } from "@/api/contract";
 
 async function getAll(): Promise<LaundryService[]> {
   return [
@@ -20,6 +20,7 @@ async function getAll(): Promise<LaundryService[]> {
       price: 5_000,
       service_time_hour: 6,
       created_at: "2024-11-15T14:30:00Z",
+
       created_by: "admin_user2",
       pricing_type: "weight",
     },

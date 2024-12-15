@@ -4,19 +4,19 @@ import {
   OrderRequest,
   OrderTaskProgress,
 } from "@/type/laundry";
-import { OrderContract } from "../contract";
+import { OrderContract } from "@/api/contract";
 
 async function create(order: OrderRequest): Promise<Order> {
   return {
     id: "ORD001",
     customer_name: "John Doe",
-    type: "Delicate Fabrics",
+    service_id: 1,
     status: "on process",
-    weight: 5.2,
-    origin: "Branch A",
+    qty: 5.2,
+    code: "abc123",
+    branch_id: 1,
     created_at: "2024-12-10T10:15:30Z",
     finish_expectation: "2024-12-11T10:15:30Z",
-    process_id: "PROC001",
     price: 52000,
     notes: "Handle with care, customer requested next-day delivery.",
     created_by: "admin",

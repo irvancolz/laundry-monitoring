@@ -1,5 +1,5 @@
 import { LaundryBranch } from "@/type/laundry";
-import { LaundryBranchApiContract } from "../contract";
+import { LaundryBranchApiContract } from "@/api/contract";
 
 async function getAll(): Promise<LaundryBranch[]> {
   return [

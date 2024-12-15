@@ -1,6 +1,6 @@
 "use server";
 import { createClient } from "@supabase/supabase-js";
-import { ApiContract } from "../contract";
+import { ApiContract } from "@/api/contract";
 import { branchApi } from "./branch";
 import { orderApi } from "./order";
 import { laundryServiceApi } from "./service";
