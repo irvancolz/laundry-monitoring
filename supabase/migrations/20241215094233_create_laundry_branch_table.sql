@@ -4,7 +4,7 @@ create table if not exists laundry_branch (
     "code" text,
     "is_washing_station" boolean,
     "address" text,
-    "created_at" timestamptz,
+    "created_at" timestamptz default now(),
     "created_by" text,
     "updated_at" timestamptz,
     "updated_by" text,

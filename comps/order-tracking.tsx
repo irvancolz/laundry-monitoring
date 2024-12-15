@@ -18,7 +18,7 @@ export default function OrderTracking({ order_id }: { order_id: string }) {
   return (
     <Stepper
       orientation="vertical"
-      activeStep={steps.filter((el) => el.status == "finished").length}
+      activeStep={steps.filter((el) => el.finished).length}
     >
       {steps.map((item, i) => {
         return (

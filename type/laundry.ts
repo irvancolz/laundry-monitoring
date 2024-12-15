@@ -45,7 +45,7 @@ export type OrderProgress = {
   id: string;
   order_id: string;
   task_id: string;
-  status: LaundryStatus;
+  finished: boolean;
   created_at: string;
   updated_at?: string | null;
 };

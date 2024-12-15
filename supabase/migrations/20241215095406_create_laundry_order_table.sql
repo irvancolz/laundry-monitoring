@@ -10,7 +10,7 @@ create table if not exists laundry_order (
     "qty" int,
     "price" int,
     "notes" text, 
-    "created_at" timestamptz,
+    "created_at" timestamptz default now(),
     "created_by" text,
     "updated_at" timestamptz,
     "updated_by" text,

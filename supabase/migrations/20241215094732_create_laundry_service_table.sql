@@ -10,7 +10,7 @@ create table if not exists laundry_service (
     "code" text,
     "service_time_hour" int,
     "price" int,
-    "created_at" timestamptz,
+    "created_at" timestamptz default now(),
     "created_by" text,
     "updated_at" timestamptz,
     "updated_by" text,
