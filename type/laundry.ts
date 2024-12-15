@@ -24,6 +24,7 @@ export type LaundryBranch = {
   id: string;
   name: string;
   code: string;
+  is_washing_station: boolean;
   address: string;
   created_at: string;
   created_by: string;
