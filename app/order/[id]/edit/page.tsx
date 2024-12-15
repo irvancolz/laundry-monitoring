@@ -30,7 +30,7 @@ export default function Page() {
         api.laundryService.getAll(),
       ]);
       setBranch(() => {
-        return branches.map((el) => ({ value: el.code, label: el.name }));
+        return branches.map((el) => ({ value: el.id, label: el.name }));
       });
 
       setServices(() => services);
@@ -45,7 +45,7 @@ export default function Page() {
       setData(() => order);
 
       if (order == null || services.length <= 0) return;
-      const selectedService = services.find((el) => el.code == order.type);
+      const selectedService = services.find((el) => el.id == order.service_id);
 
       if (!selectedService) return;
       setService(() => selectedService);
@@ -65,14 +65,14 @@ export default function Page() {
     );
   }
 
-  const totalPrice = (data.weight || 0) * (service?.price || 0);
+  const totalPrice = (data.qty || 0) * (service?.price || 0);
 
   function resetForm() {
     setData(
       () =>
         ({
-          type: "",
-          origin: "",
+          service_id: 0,
+          branch_id: 0,
           customer_name: "",
         } as Order)
     );
@@ -94,18 +94,6 @@ export default function Page() {
     redirect("/");
   }
 
-  function handleWeightChange(weight: number) {
-    if (data == null) return;
-    setData(
-      (prev) =>
-        ({
-          ...prev,
-          weight: weight,
-          price: weight * (service?.price || 0),
-        } as Order)
-    );
-  }
-
   function handleQtyChange(qty: number) {
     if (data == null) return;
     setData(
@@ -120,7 +108,7 @@ export default function Page() {
 
   function handleServiceChange(newService: LaundryType) {
     if (services.length <= 0) return;
-    const selectedService = services.find((el) => el.code == newService);
+    const selectedService = services.find((el) => el.id == newService);
     if (!selectedService) return;
     const currentTime = dayjs();
     setService(() => selectedService);
@@ -133,7 +121,7 @@ export default function Page() {
       (prev) =>
         ({
           ...prev,
-          type: selectedService.code,
+          type: selectedService.id,
           created_at: currentTime.format("DD/MM/YYYY HH:mm:ss"),
           finish_expectation,
           price: totalPrice,
@@ -162,7 +150,7 @@ export default function Page() {
             label="counter"
             option={branch}
             defaultValue=""
-            value={data.origin}
+            value={data.branch_id}
             onChange={(e) => {
               setData(
                 (prev) =>
@@ -187,9 +175,11 @@ export default function Page() {
             label="tipe"
             defaultValue=""
             required
-            value={data.type}
-            option={services.map((el) => ({ value: el.code, label: el.name }))}
-            onChange={(e) => handleServiceChange(e.target.value as string)}
+            value={data.service_id}
+            option={services.map((el) => ({ value: el.id, label: el.name }))}
+            onChange={(e) =>
+              handleServiceChange(e.target.value as unknown as number)
+            }
           />
           <Stack direction="row" justifyContent="space-between" gap="1rem">
             <DatePicker
@@ -204,27 +194,16 @@ export default function Page() {
             />
           </Stack>
           <Stack direction="row" justifyContent="space-between" gap="1rem">
-            {service?.pricing_type == "weight" ? (
-              <TextInput
-                label="berat"
-                type="number"
-                onChange={(e) =>
-                  handleWeightChange(e.target.value as unknown as number)
-                }
-                value={data.weight}
-                required
-              />
-            ) : (
-              <TextInput
-                label="jumlah"
-                type="number"
-                onChange={(e) =>
-                  handleQtyChange(e.target.value as unknown as number)
-                }
-                value={data.weight}
-                required
-              />
-            )}
+            <TextInput
+              label={service?.pricing_type == "weight" ? "berat" : "jumlah"}
+              type="number"
+              onChange={(e) =>
+                handleQtyChange(e.target.value as unknown as number)
+              }
+              value={data.qty}
+              required
+            />
+
             <TextInput
               label="harga"
               type="number"

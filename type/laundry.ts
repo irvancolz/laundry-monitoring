@@ -1,27 +1,27 @@
 export type Order = {
   id: string;
   status: LaundryStatus;
+  code: string;
 } & OrderRequest;
 
-export type LaundryType = string;
+export type LaundryType = number;
 
 export type LaundryStatus = "finished" | "on process";
 
 export type OrderRequest = {
-  origin: string;
-  type: LaundryType;
+  branch_id: number;
+  service_id: LaundryType;
   customer_name: string;
   created_at: string;
   finish_expectation: string;
-  weight?: number;
-  qty?: number;
+  qty: number;
   price: number;
   notes?: string;
   created_by: string;
 };
 
 export type LaundryBranch = {
-  id: string;
+  id: number;
   name: string;
   code: string;
   is_washing_station: boolean;
@@ -31,7 +31,7 @@ export type LaundryBranch = {
 };
 
 export type LaundryService = {
-  id: string;
+  id: number;
   pricing_type: "weight" | "piece";
   name: string;
   code: string;
