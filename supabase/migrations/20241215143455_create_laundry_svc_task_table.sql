@@ -7,5 +7,6 @@ create table if not exists laundry_service_task (
     "updated_at" timestamptz,
     "updated_by" text,
     "deleted_at" timestamptz,
-    "deleted_by" text
+    "deleted_by" text,
+    "is_deleted" boolean default false
 ) 

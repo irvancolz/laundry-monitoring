@@ -9,7 +9,7 @@ import DatePicker from "@/comps/datepicker";
 import Topbar from "@/comps/topbar";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
-import { LaundryService, LaundryType, OrderRequest } from "@/type/laundry";
+import { LaundryService, OrderRequest } from "@/type/laundry";
 import { Option } from "@/type/general";
 import { api } from "@/api";
 import Select from "@/comps/select";
@@ -60,22 +60,22 @@ export default function Page() {
     }));
   }
 
-  function handleServiceChange(newService: LaundryType) {
+  function handleServiceChange(newService: number) {
     if (services.length <= 0) return;
     const selectedService = services.find((el) => el.id == newService);
-    if (!selectedService) return;
+    if (selectedService == null) return;
     const currentTime = dayjs();
     setService(() => selectedService);
     const finish_expectation = currentTime
-      .add(selectedService.service_time_hour, "h")
-      .format("DD/MM/YYYY HH:mm:ss");
+      .add(selectedService.service_time_hour!, "h")
+      .format("YYYY-MM-DD HH:mm");
 
     setData((prev) => ({
       ...prev,
-      type: selectedService.id,
-      created_at: currentTime.format("DD/MM/YYYY HH:mm:ss"),
-      finish_expectation,
-      price: totalPrice,
+      service_id: newService,
+      created_at: currentTime.format("YYYY-MM-DD HH:mm"),
+      finish_expectation: finish_expectation,
+      price: prev.qty! * selectedService.price!,
     }));
   }
 
@@ -86,7 +86,7 @@ export default function Page() {
         api.laundryService.getAll(),
       ]);
       setBranch(() => {
-        return branches.map((el) => ({ value: el.id, label: el.name }));
+        return branches.map((el) => ({ value: el.id, label: el.name! }));
       });
 
       setServices(() => services);
@@ -120,7 +120,7 @@ export default function Page() {
             onChange={(e) => {
               setData((prev) => ({
                 ...prev,
-                origin: e.target.value as string,
+                branch_id: e.target.value as number,
               }));
             }}
           />
@@ -137,7 +137,7 @@ export default function Page() {
             defaultValue=""
             required
             value={data.service_id}
-            option={services.map((el) => ({ value: el.id, label: el.name }))}
+            option={services.map((el) => ({ value: el.id, label: el.name! }))}
             onChange={(e) =>
               handleServiceChange(e.target.value as unknown as number)
             }
@@ -145,11 +145,13 @@ export default function Page() {
           <Stack direction="row" justifyContent="space-between" gap="1rem">
             <DatePicker
               label="tanggal masuk"
+              defaultValue={dayjs(data.created_at)}
               value={dayjs(data.created_at)}
               disabled
             />
             <DatePicker
               label="tanggal selesai"
+              defaultValue={dayjs(data.finish_expectation)}
               value={dayjs(data.finish_expectation)}
               disabled
             />
@@ -181,7 +183,7 @@ export default function Page() {
           </Text>
           <TextareaAutosize
             placeholder="catatan"
-            value={data.notes}
+            value={data.notes!}
             onChange={(e) =>
               setData((prev) => ({ ...prev, notes: e.target.value }))
             }
