@@ -1,4 +1,4 @@
-import { OrderTaskProgress } from "@/type/laundry";
+import { OrderTask, OrderTaskProgress } from "@/type/laundry";
 import { supabase, supabaseApi } from ".";
 import { OrderProgressApiContract } from "@/api/contract";
 import { SUPABASE_ORDER_PROGRESS_TABLE, SUPABASE_TASK_TABLE } from "./const";
@@ -101,6 +101,37 @@ async function get(params: string): Promise<OrderTaskProgress[]> {
       order: 6,
     },
   ];
+}
+
+async function getUnfinishedTask(
+  order_id: string
+): Promise<Pick<OrderTask, "id" | "name" | "order">> {
+  const { data: progress, error } = await supabase
+    .from(SUPABASE_ORDER_PROGRESS_TABLE)
+    .select("order_task_id")
+    .eq("finished", false)
+    .eq("laundry_order_id", order_id);
+
+  if (error != null) {
+    throw error;
+  }
+
+  const taskTc = await supabase
+    .from(SUPABASE_TASK_TABLE)
+    .select(`id, order, name`)
+    .in(
+      "id",
+      progress.map((el) => el.order_task_id)
+    )
+    .order("order", { ascending: true })
+    .limit(1)
+    .single();
+
+  if (taskTc.error != null) {
+    throw error;
+  }
+
+  return taskTc.data;
 }
 
 export const orderProgressApi: OrderProgressApiContract = { get, generate };

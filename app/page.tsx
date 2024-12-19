@@ -46,7 +46,11 @@ export default function Home() {
         </Button>
         <Stack sx={{ flexGrow: 1, gap: ".75rem" }}>
           {order.map((item, i) => {
-            return <OrderCard key={i} order={item} />;
+            return (
+              <Link key={i} href={`order/${item.id}`}>
+                <OrderCard order={item} />
+              </Link>
+            );
           })}
         </Stack>
         <Button

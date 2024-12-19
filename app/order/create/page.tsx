@@ -53,6 +53,7 @@ export default function Page() {
   }
 
   function handleQtyChange(qty: number) {
+    if (qty < 0) return;
     setData((prev) => ({
       ...prev,
       qty: qty,

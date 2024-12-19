@@ -1,7 +1,11 @@
-import { Order, OrderRequest, OrderTaskProgress } from "@/type/laundry";
+import { Order, OrderRequest } from "@/type/laundry";
 import { OrderContract } from "@/api/contract";
 import { supabase, supabaseApi } from ".";
-import { SUPABASE_ORDER_PROGRESS_TABLE, SUPABASE_ORDER_TABLE } from "./const";
+import {
+  SUPABASE_ORDER_PROGRESS_TABLE,
+  SUPABASE_ORDER_TABLE,
+  SUPABASE_TASK_TABLE,
+} from "./const";
 import dayjs from "dayjs";
 
 async function create(order: OrderRequest): Promise<Order> {
@@ -9,7 +13,7 @@ async function create(order: OrderRequest): Promise<Order> {
     throw new Error("service not found, please select service type");
   // set service name
   const service = await supabaseApi.laundryService.get(order.service_id);
-
+  order.service_name = service.name;
   // generate code
   const current = dayjs(order.created_at).unix();
   const code = `${service.code}${current}`;
@@ -87,13 +91,50 @@ async function update(order: Order): Promise<Order> {
 }
 
 async function getAll(): Promise<Order[]> {
-  const { data, error } = await supabase.from(SUPABASE_ORDER_TABLE).select();
+  const { data, error } = await supabase
+    .from(SUPABASE_ORDER_TABLE)
+    .select()
+    .eq("is_deleted", false);
 
   if (error != null) {
     throw error;
   }
 
-  return data;
+  const result: Order[] = [];
+
+  for (let i = 0; i < data.length; i++) {
+    const { data: progress, error } = await supabase
+      .from(SUPABASE_ORDER_PROGRESS_TABLE)
+      .select("order_task_id")
+      .eq("finished", false)
+      .eq("laundry_order_id", data[i].id);
+
+    if (error != null) {
+      throw error;
+    }
+
+    const taskTc = await supabase
+      .from(SUPABASE_TASK_TABLE)
+      .select(`order, name`)
+      .in(
+        "id",
+        progress.map((el) => el.order_task_id)
+      )
+      .order("order", { ascending: true })
+      .limit(1)
+      .single();
+
+    if (taskTc.error != null) {
+      throw error;
+    }
+
+    const order: Order = { ...data[i] } as unknown as Order;
+    order.current_progress = taskTc.data.name;
+
+    result.push(order);
+  }
+
+  return result;
 }
 
 export const orderApi: OrderContract = {

@@ -1,6 +1,7 @@
 import { Order } from "@/type/laundry";
 import Text from "./text";
 import { Box, Chip, Stack } from "@mui/material";
+import dayjs from "dayjs";
 
 export default function OrderCard({ order }: { order: Order }) {
   return (
@@ -13,9 +14,16 @@ export default function OrderCard({ order }: { order: Order }) {
           gap: ".5rem",
         }}
       >
-        <Text sx={{ color: "primary.main", fontSize: ".8rem" }}>
-          {order.code}
+        <Text
+          sx={{
+            color: "primary.main",
+            fontWeight: 700,
+            textTransform: "capitalize",
+          }}
+        >
+          {order.customer_name}
         </Text>
+
         <Chip
           variant="outlined"
           sx={{
@@ -23,16 +31,30 @@ export default function OrderCard({ order }: { order: Order }) {
             fontWeight: 700,
             borderColor: "primary.main",
             color: "primary.main",
+            p: ".25rem",
           }}
           label={order.current_progress}
         />
       </Stack>
-      <Text sx={{ color: "primary.main", fontWeight: 700 }}>
-        {order.customer_name}
-      </Text>
-      <Text sx={{ color: "primary.main", fontWeight: 700, fontSize: ".9rem" }}>
+
+      <Text sx={{ color: "primary.main", fontSize: ".9rem" }}>
         {order.service_name}
       </Text>
+      <Stack
+        direction="row"
+        sx={{
+          justifyContent: "space-between",
+          alignItems: "flex-end",
+          mt: ".5rem",
+        }}
+      >
+        <Text sx={{ fontSize: ".6rem", color: "primary.main" }}>
+          {order.code}
+        </Text>
+        <Text sx={{ fontSize: ".6rem", color: "primary.main" }}>
+          {dayjs(order.created_at).format("DD MMM YYYY")}
+        </Text>
+      </Stack>
     </Box>
   );
 }

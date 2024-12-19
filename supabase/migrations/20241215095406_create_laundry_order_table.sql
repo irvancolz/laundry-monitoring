@@ -4,7 +4,7 @@ create table if not exists laundry_order (
     "code" text unique,
     "branch_id" bigint references laundry_branch,
     "service_id" bigint references laundry_service,
-    "sevice_name" text,
+    "service_name" text,
     "is_finished" boolean default false,
     "customer_name" text, 
     "finish_expectation" timestamptz,
