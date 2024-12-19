@@ -1,4 +1,4 @@
-import { Order, OrderRequest } from "@/type/laundry";
+import { Order, OrderRequest, OrderTask } from "@/type/laundry";
 import { OrderContract } from "@/api/contract";
 import { supabase, supabaseApi } from ".";
 import {
@@ -18,6 +18,12 @@ async function create(order: OrderRequest): Promise<Order> {
   const current = dayjs(order.created_at).unix();
   const code = `${service.code}${current}`;
   order.code = code;
+
+  // set branch name
+  if (order.branch_id == null)
+    throw new Error("failed to add order, please provide the branch origin");
+  const branch = await supabaseApi.laundryBranch.get(order.branch_id);
+  order.branch_name = branch.name;
 
   // insert order
   const { data, error } = await supabase
@@ -116,7 +122,7 @@ async function getAll(): Promise<Order[]> {
 
 async function getCurrentProgress(
   order_id: string
-): Promise<{ id: number; order: number | null; name: string | null }> {
+): Promise<Pick<OrderTask, "id" | "name" | "order" | "description">> {
   const { data: progress, error } = await supabase
     .from(SUPABASE_ORDER_PROGRESS_TABLE)
     .select("order_task_id")
@@ -129,7 +135,7 @@ async function getCurrentProgress(
 
   const taskTc = await supabase
     .from(SUPABASE_TASK_TABLE)
-    .select(`id, order, name`)
+    .select(`id, order, name, description`)
     .in(
       "id",
       progress.map((el) => el.order_task_id)
@@ -150,4 +156,5 @@ export const orderApi: OrderContract = {
   getAll,
   update,
   get,
+  getCurrentProgress,
 };

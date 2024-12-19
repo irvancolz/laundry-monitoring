@@ -23,6 +23,7 @@ export type OrderRequest = {
   created_by: string | null;
   created_at: string | null;
   branch_id: number | null;
+  branch_name: string | null;
   notes?: string | null;
   price: number | null;
   qty: number | null;

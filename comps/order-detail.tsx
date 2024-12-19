@@ -36,13 +36,13 @@ export default function OrderDetail({ order }: { order: Order }) {
 
   const gridContent: (Option & { icon: ReactNode })[] = [
     {
-      label: "berat",
-      value: order.qty + "Kg",
+      label: "jumlah",
+      value: order.qty!,
       icon: <ScaleOutlined sx={{ color: "primary.main" }} />,
     },
     {
       label: "asal",
-      value: order.qty + "Kg",
+      value: order.branch_name!,
       icon: <HomeOutlined sx={{ color: "primary.main" }} />,
     },
     {

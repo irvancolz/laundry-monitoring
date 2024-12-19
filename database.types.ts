@@ -82,6 +82,7 @@ export type Database = {
       laundry_order: {
         Row: {
           branch_id: number | null
+          branch_name: string | null
           code: string | null
           created_at: string | null
           created_by: string | null
@@ -102,6 +103,7 @@ export type Database = {
         }
         Insert: {
           branch_id?: number | null
+          branch_name?: string | null
           code?: string | null
           created_at?: string | null
           created_by?: string | null
@@ -122,6 +124,7 @@ export type Database = {
         }
         Update: {
           branch_id?: number | null
+          branch_name?: string | null
           code?: string | null
           created_at?: string | null
           created_by?: string | null

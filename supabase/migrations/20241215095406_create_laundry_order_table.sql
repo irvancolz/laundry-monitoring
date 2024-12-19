@@ -3,6 +3,7 @@ create table if not exists laundry_order (
     "id" uuid default uuid_generate_v4() primary key,
     "code" text unique,
     "branch_id" bigint references laundry_branch,
+    "branch_name" text,
     "service_id" bigint references laundry_service,
     "service_name" text,
     "is_finished" boolean default false,

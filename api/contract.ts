@@ -28,6 +28,9 @@ export interface OrderContract {
   create: (order: OrderRequest) => Promise<Order>;
   update: (order: Order) => Promise<Order>;
   get: (id: string) => Promise<Order | null>;
+  getCurrentProgress: (
+    order_id: string
+  ) => Promise<Pick<OrderTask, "id" | "name" | "order" | "description">>;
 }
 
 export interface OrderTaskContract {
@@ -36,6 +39,7 @@ export interface OrderTaskContract {
 
 export interface LaundryBranchApiContract {
   getAll: () => Promise<LaundryBranch[]>;
+  get: (id: number) => Promise<LaundryBranch>;
 }
 
 export interface OrderProgressApiContract {
