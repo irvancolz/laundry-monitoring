@@ -2,6 +2,7 @@
 import { api } from "@/api";
 import { OrderTaskProgress } from "@/type/laundry";
 import { Step, StepContent, StepLabel, Stepper } from "@mui/material";
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 
 export default function OrderTracking({ order_id }: { order_id: string }) {
@@ -9,7 +10,7 @@ export default function OrderTracking({ order_id }: { order_id: string }) {
 
   useEffect(() => {
     async function getData() {
-      const resp = await api.order.getProgress(order_id);
+      const resp = await api.orderProgress.get(order_id);
       setSteps(() => resp);
     }
     getData();
@@ -23,8 +24,18 @@ export default function OrderTracking({ order_id }: { order_id: string }) {
       {steps.map((item, i) => {
         return (
           <Step key={i}>
-            <StepLabel>{item.name}</StepLabel>
-            <StepContent>{item.description}</StepContent>
+            <StepLabel>{`${item.name} ${
+              item.finished
+                ? ": " + dayjs(item.updated_at).format("DD MMM YYYY HH:mm")
+                : ""
+            }`}</StepLabel>
+            <StepContent
+              sx={{
+                fontSize: ".8rem",
+              }}
+            >
+              {item.description}
+            </StepContent>
           </Step>
         );
       })}

@@ -57,20 +57,18 @@ async function create(order: OrderRequest): Promise<Order> {
 }
 
 async function get(id: string): Promise<Order | null> {
-  return {
-    id: "ORD001",
-    customer_name: "John Doe",
-    type: "IRO003",
-    status: "on process",
-    weight: 5.2,
-    origin: "WSL004",
-    created_at: "2024-12-10T10:15:30Z",
-    finish_expectation: "2024-12-11T10:15:30Z",
-    process_id: "PROC001",
-    price: 52000,
-    notes: "Handle with care, customer requested next-day delivery.",
-    created_by: "admin",
-  };
+  const { data, error } = await supabase
+    .from(SUPABASE_ORDER_TABLE)
+    .select()
+    .eq("id", id)
+    .single();
+  if (error != null) throw error;
+
+  const progress = await getCurrentProgress(id);
+
+  const result: Order = { ...data, current_progress: progress.name };
+
+  return result;
 }
 
 async function update(order: Order): Promise<Order> {
@@ -103,38 +101,48 @@ async function getAll(): Promise<Order[]> {
   const result: Order[] = [];
 
   for (let i = 0; i < data.length; i++) {
-    const { data: progress, error } = await supabase
-      .from(SUPABASE_ORDER_PROGRESS_TABLE)
-      .select("order_task_id")
-      .eq("finished", false)
-      .eq("laundry_order_id", data[i].id);
+    const progress = await getCurrentProgress(data[i].id);
 
-    if (error != null) {
-      throw error;
-    }
-
-    const taskTc = await supabase
-      .from(SUPABASE_TASK_TABLE)
-      .select(`order, name`)
-      .in(
-        "id",
-        progress.map((el) => el.order_task_id)
-      )
-      .order("order", { ascending: true })
-      .limit(1)
-      .single();
-
-    if (taskTc.error != null) {
-      throw error;
-    }
-
-    const order: Order = { ...data[i] } as unknown as Order;
-    order.current_progress = taskTc.data.name;
+    const order: Order = {
+      ...data[i],
+      current_progress: progress.name,
+    };
 
     result.push(order);
   }
 
   return result;
+}
+
+async function getCurrentProgress(
+  order_id: string
+): Promise<{ id: number; order: number | null; name: string | null }> {
+  const { data: progress, error } = await supabase
+    .from(SUPABASE_ORDER_PROGRESS_TABLE)
+    .select("order_task_id")
+    .eq("finished", false)
+    .eq("laundry_order_id", order_id);
+
+  if (error != null) {
+    throw error;
+  }
+
+  const taskTc = await supabase
+    .from(SUPABASE_TASK_TABLE)
+    .select(`id, order, name`)
+    .in(
+      "id",
+      progress.map((el) => el.order_task_id)
+    )
+    .order("order", { ascending: true })
+    .limit(1)
+    .single();
+
+  if (taskTc.error != null) {
+    throw error;
+  }
+
+  return taskTc.data;
 }
 
 export const orderApi: OrderContract = {

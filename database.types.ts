@@ -43,6 +43,7 @@ export type Database = {
           deleted_at: string | null
           deleted_by: string | null
           id: number
+          is_deleted: boolean | null
           is_washing_station: boolean | null
           name: string | null
           updated_at: string | null
@@ -56,6 +57,7 @@ export type Database = {
           deleted_at?: string | null
           deleted_by?: string | null
           id?: never
+          is_deleted?: boolean | null
           is_washing_station?: boolean | null
           name?: string | null
           updated_at?: string | null
@@ -69,6 +71,7 @@ export type Database = {
           deleted_at?: string | null
           deleted_by?: string | null
           id?: never
+          is_deleted?: boolean | null
           is_washing_station?: boolean | null
           name?: string | null
           updated_at?: string | null
@@ -93,7 +96,7 @@ export type Database = {
           price: number | null
           qty: number | null
           service_id: number | null
-          sevice_name: string | null
+          service_name: string | null
           updated_at: string | null
           updated_by: string | null
         }
@@ -113,7 +116,7 @@ export type Database = {
           price?: number | null
           qty?: number | null
           service_id?: number | null
-          sevice_name?: string | null
+          service_name?: string | null
           updated_at?: string | null
           updated_by?: string | null
         }
@@ -133,7 +136,7 @@ export type Database = {
           price?: number | null
           qty?: number | null
           service_id?: number | null
-          sevice_name?: string | null
+          service_name?: string | null
           updated_at?: string | null
           updated_by?: string | null
         }
@@ -162,6 +165,7 @@ export type Database = {
           deleted_by: string | null
           finished: boolean | null
           id: string
+          is_deleted: boolean | null
           laundry_order_id: string | null
           order_task_id: number | null
           updated_at: string | null
@@ -174,6 +178,7 @@ export type Database = {
           deleted_by?: string | null
           finished?: boolean | null
           id?: string
+          is_deleted?: boolean | null
           laundry_order_id?: string | null
           order_task_id?: number | null
           updated_at?: string | null
@@ -186,6 +191,7 @@ export type Database = {
           deleted_by?: string | null
           finished?: boolean | null
           id?: string
+          is_deleted?: boolean | null
           laundry_order_id?: string | null
           order_task_id?: number | null
           updated_at?: string | null
@@ -216,6 +222,7 @@ export type Database = {
           deleted_at: string | null
           deleted_by: string | null
           id: number
+          is_deleted: boolean | null
           name: string | null
           price: number | null
           pricing_type:
@@ -232,6 +239,7 @@ export type Database = {
           deleted_at?: string | null
           deleted_by?: string | null
           id?: never
+          is_deleted?: boolean | null
           name?: string | null
           price?: number | null
           pricing_type?:
@@ -248,6 +256,7 @@ export type Database = {
           deleted_at?: string | null
           deleted_by?: string | null
           id?: never
+          is_deleted?: boolean | null
           name?: string | null
           price?: number | null
           pricing_type?:
@@ -266,6 +275,7 @@ export type Database = {
           deleted_at: string | null
           deleted_by: string | null
           id: number
+          is_deleted: boolean | null
           laundry_service_id: number | null
           order_task_id: number | null
           updated_at: string | null
@@ -277,6 +287,7 @@ export type Database = {
           deleted_at?: string | null
           deleted_by?: string | null
           id?: never
+          is_deleted?: boolean | null
           laundry_service_id?: number | null
           order_task_id?: number | null
           updated_at?: string | null
@@ -288,6 +299,7 @@ export type Database = {
           deleted_at?: string | null
           deleted_by?: string | null
           id?: never
+          is_deleted?: boolean | null
           laundry_service_id?: number | null
           order_task_id?: number | null
           updated_at?: string | null
@@ -317,7 +329,9 @@ export type Database = {
           created_by: string | null
           deleted_at: string | null
           deleted_by: string | null
+          description: string | null
           id: number
+          is_deleted: boolean | null
           name: string | null
           order: number | null
           updated_at: string | null
@@ -329,7 +343,9 @@ export type Database = {
           created_by?: string | null
           deleted_at?: string | null
           deleted_by?: string | null
+          description?: string | null
           id?: never
+          is_deleted?: boolean | null
           name?: string | null
           order?: number | null
           updated_at?: string | null
@@ -341,7 +357,9 @@ export type Database = {
           created_by?: string | null
           deleted_at?: string | null
           deleted_by?: string | null
+          description?: string | null
           id?: never
+          is_deleted?: boolean | null
           name?: string | null
           order?: number | null
           updated_at?: string | null

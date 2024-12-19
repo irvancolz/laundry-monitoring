@@ -8,7 +8,7 @@ create table if not exists laundry_order (
     "is_finished" boolean default false,
     "customer_name" text, 
     "finish_expectation" timestamptz,
-    "qty" int,
+    "qty" decimal,
     "price" int,
     "notes" text, 
     "created_at" timestamptz default now(),

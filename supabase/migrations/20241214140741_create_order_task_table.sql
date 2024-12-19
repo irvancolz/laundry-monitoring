@@ -3,6 +3,7 @@ create table if not exists order_task (
     "name" text,
     "code" text,
     "order" int,
+    "description" text,
     "created_at" timestamptz default now(),
     "created_by" text,
     "updated_at" timestamptz,
