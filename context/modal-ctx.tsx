@@ -19,7 +19,7 @@ export default function ModalContextProvider({
 }: {
   children: ReactNode;
 }) {
-  const [opened, setOpened] = useState<boolean>(true);
+  const [opened, setOpened] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
 
   function open() {

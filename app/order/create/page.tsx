@@ -7,7 +7,7 @@ import { Close, Save } from "@mui/icons-material";
 import { Paper, Stack, TextareaAutosize } from "@mui/material";
 import DatePicker from "@/comps/datepicker";
 import Topbar from "@/comps/topbar";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { LaundryService, OrderRequest } from "@/type/laundry";
 import { Option } from "@/type/general";
@@ -18,6 +18,7 @@ import { useModal } from "@/context/modal-ctx";
 
 export default function Page() {
   const { handleError } = useModal();
+  const router = useRouter();
   const [data, setData] = useState<OrderRequest>({
     service_id: 0,
     branch_id: 0,
@@ -42,8 +43,9 @@ export default function Page() {
   async function handleSubmit(e: any) {
     e.preventDefault();
     try {
-      await api.order.create(data);
+      const resp = await api.order.create(data);
       resetForm();
+      router.push(`/order/${resp.id}/success`);
     } catch (error) {
       handleError(error);
     }

@@ -7,7 +7,7 @@ import TextInput from "@/comps/text-input";
 import Topbar from "@/comps/topbar";
 import { Order } from "@/type/laundry";
 import { FilterAlt, LocalLaundryServiceOutlined } from "@mui/icons-material";
-import { Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -44,14 +44,20 @@ export default function Home() {
         >
           Urutkan
         </Button>
-        <Stack sx={{ flexGrow: 1, gap: ".75rem" }}>
-          {order.map((item, i) => {
-            return (
-              <Link key={i} href={`order/${item.id}`}>
-                <OrderCard order={item} />
-              </Link>
-            );
-          })}
+        <Stack
+          sx={{
+            flexGrow: 1,
+          }}
+        >
+          <Stack sx={{ height: "20rem", overflow: "scroll", gap: ".75rem" }}>
+            {order.map((item, i) => {
+              return (
+                <Link key={i} href={`order/${item.id}`}>
+                  <OrderCard order={item} />
+                </Link>
+              );
+            })}
+          </Stack>
         </Stack>
         <Button
           startIcon={<LocalLaundryServiceOutlined fontSize="inherit" />}
