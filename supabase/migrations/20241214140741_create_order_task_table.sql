@@ -1,3 +1,6 @@
+alter database postgres set datestyle to 'ISO, DMY';
+alter database postgres
+set timezone to 'Asia/Jakarta';
 create table if not exists order_task (
     "id" bigint primary key generated always as identity,
     "name" text,

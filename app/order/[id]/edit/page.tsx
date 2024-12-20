@@ -7,7 +7,7 @@ import { Close, Save } from "@mui/icons-material";
 import { Paper, Stack, TextareaAutosize } from "@mui/material";
 import DatePicker from "@/comps/datepicker";
 import Topbar from "@/comps/topbar";
-import { redirect, useParams } from "next/navigation";
+import { redirect, useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { LaundryService, Order } from "@/type/laundry";
 import { Option } from "@/type/general";
@@ -15,8 +15,11 @@ import { api } from "@/api";
 import Select from "@/comps/select";
 import dayjs from "dayjs";
 import OrderNotFound from "@/comps/order-not-found";
+import { useModal } from "@/context/modal-ctx";
 
 export default function Page() {
+  const router = useRouter();
+  const { handleError } = useModal();
   const [data, setData] = useState<Order | null>();
   const [branch, setBranch] = useState<Option[]>([]);
   const [services, setServices] = useState<LaundryService[]>([]);
@@ -84,8 +87,9 @@ export default function Page() {
     try {
       await api.order.update(data);
       resetForm();
+      router.push(`/order/${id}`);
     } catch (error) {
-      console.log(error);
+      handleError(error);
     }
   }
 
@@ -143,7 +147,7 @@ export default function Page() {
       >
         <Stack gap="1rem" flexGrow={1} marginTop="2rem">
           <Text variant="h1" fontSize="1.5rem" fontWeight={700}>
-            Tambah Pesanan Baru
+            Perbarui Pesanan
           </Text>
           <Select
             id="laundry-origin-select"
