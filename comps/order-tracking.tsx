@@ -26,7 +26,10 @@ export default function OrderTracking({ order_id }: { order_id: string }) {
           <Step key={i}>
             <StepLabel>{`${item.name} ${
               item.finished
-                ? ": " + dayjs(item.updated_at).format("DD MMM YYYY HH:mm")
+                ? ": " +
+                  (item.updated_at == null
+                    ? "-"
+                    : dayjs(item.updated_at).format("DD MMM YYYY HH:mm"))
                 : ""
             }`}</StepLabel>
             <StepContent

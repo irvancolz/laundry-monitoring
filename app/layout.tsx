@@ -9,6 +9,8 @@ import { themeOptions } from "@/theme";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import id from "dayjs/locale/id";
+import Modal from "@/comps/dialog";
+import ModalContextProvider from "@/context/modal-ctx";
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -26,7 +28,12 @@ export default function RootLayout({
           dateAdapter={AdapterDayjs}
           adapterLocale={id.name}
         >
-          <body>{children}</body>
+          <ModalContextProvider>
+            <body>
+              <Modal />
+              {children}
+            </body>
+          </ModalContextProvider>
         </LocalizationProvider>
       </ThemeProvider>
     </html>

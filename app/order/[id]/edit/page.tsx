@@ -9,7 +9,7 @@ import DatePicker from "@/comps/datepicker";
 import Topbar from "@/comps/topbar";
 import { redirect, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { LaundryService, LaundryType, Order } from "@/type/laundry";
+import { LaundryService, Order } from "@/type/laundry";
 import { Option } from "@/type/general";
 import { api } from "@/api";
 import Select from "@/comps/select";
@@ -30,7 +30,7 @@ export default function Page() {
         api.laundryService.getAll(),
       ]);
       setBranch(() => {
-        return branches.map((el) => ({ value: el.id, label: el.name }));
+        return branches.map((el) => ({ value: el.id, label: el.name! }));
       });
 
       setServices(() => services);
@@ -106,14 +106,14 @@ export default function Page() {
     );
   }
 
-  function handleServiceChange(newService: LaundryType) {
+  function handleServiceChange(newService: number) {
     if (services.length <= 0) return;
     const selectedService = services.find((el) => el.id == newService);
     if (!selectedService) return;
     const currentTime = dayjs();
     setService(() => selectedService);
     const finish_expectation = currentTime
-      .add(selectedService.service_time_hour, "h")
+      .add(selectedService.service_time_hour!, "h")
       .format("DD/MM/YYYY HH:mm:ss");
 
     if (data == null) return;
@@ -176,7 +176,7 @@ export default function Page() {
             defaultValue=""
             required
             value={data.service_id}
-            option={services.map((el) => ({ value: el.id, label: el.name }))}
+            option={services.map((el) => ({ value: el.id, label: el.name! }))}
             onChange={(e) =>
               handleServiceChange(e.target.value as unknown as number)
             }
@@ -221,7 +221,7 @@ export default function Page() {
           </Text>
           <TextareaAutosize
             placeholder="catatan"
-            value={data.notes}
+            value={data.notes!}
             onChange={(e) =>
               setData((prev) => ({ ...prev, notes: e.target.value } as Order))
             }

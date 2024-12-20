@@ -14,8 +14,10 @@ import { Option } from "@/type/general";
 import { api } from "@/api";
 import Select from "@/comps/select";
 import dayjs from "dayjs";
+import { useModal } from "@/context/modal-ctx";
 
 export default function Page() {
+  const { handleError } = useModal();
   const [data, setData] = useState<OrderRequest>({
     service_id: 0,
     branch_id: 0,
@@ -43,7 +45,7 @@ export default function Page() {
       await api.order.create(data);
       resetForm();
     } catch (error) {
-      console.log(error);
+      handleError(error);
     }
   }
 
