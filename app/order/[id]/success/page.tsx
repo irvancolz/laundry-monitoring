@@ -1,6 +1,7 @@
 "use client";
 
 import { api } from "@/api";
+import BottomBar from "@/comps/bottom-bar";
 import Button from "@/comps/button";
 import OrderDetail from "@/comps/order-detail";
 import OrderNotFound from "@/comps/order-not-found";
@@ -51,20 +52,7 @@ export default function Page() {
         {order == null && <OrderNotFound />}
         {order != null && <OrderDetail order={order!} />}
       </Stack>
-      <Stack
-        sx={{
-          gap: ".5rem",
-          background: "#fff",
-          paddingInline: "1.5rem",
-          paddingBlock: "1.5rem 1rem",
-          position: "sticky",
-          left: 0,
-          bottom: 0,
-          width: "100vw",
-          translate: "-1.5rem 1.5rem",
-          borderRadius: ".75rem .75rem 0 0",
-        }}
-      >
+      <BottomBar>
         <Button
           variant="outlined"
           onClick={() => redirect("/")}
@@ -73,7 +61,7 @@ export default function Page() {
           Kembali ke Beranda
         </Button>
         <Button startIcon={<PrintOutlined />}>Cetak Resi</Button>
-      </Stack>
+      </BottomBar>
     </>
   );
 }

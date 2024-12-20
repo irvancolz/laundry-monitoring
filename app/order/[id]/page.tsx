@@ -1,15 +1,17 @@
 "use client";
 import { api } from "@/api";
+import BottomBar from "@/comps/bottom-bar";
+import Button from "@/comps/button";
 import OrderDetail from "@/comps/order-detail";
 import OrderNotFound from "@/comps/order-not-found";
 import OrderTracking from "@/comps/order-tracking";
 import Text from "@/comps/text";
 import Topbar from "@/comps/topbar";
 import { Order, OrderTask } from "@/type/laundry";
-import { ArrowBack, Menu } from "@mui/icons-material";
+import { ArrowBack, EditOutlined, Menu } from "@mui/icons-material";
 import { Alert, AlertTitle, IconButton, Stack } from "@mui/material";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { redirect, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Page() {
@@ -72,6 +74,16 @@ export default function Page() {
           <OrderTracking order_id={id} />
         </div>
       </Stack>
+      <BottomBar>
+        <Button
+          startIcon={<EditOutlined />}
+          variant="outlined"
+          onClick={() => redirect(`/order/${id}/edit`)}
+        >
+          Perbarui Pesanan
+        </Button>
+        <Button startIcon={<ArrowBack />}>Kembali Ke Beranda </Button>
+      </BottomBar>
     </>
   );
 }
