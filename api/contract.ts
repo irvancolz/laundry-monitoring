@@ -1,6 +1,7 @@
 import {
   LaundryBranch,
   LaundryService,
+  LaundryServiceRequest,
   Order,
   OrderRequest,
   OrderTask,
@@ -20,7 +21,10 @@ export interface ApiContract {
 
 export interface LaundryServiceApiContract {
   getAll: () => Promise<LaundryService[]>;
-  get: (code: number) => Promise<LaundryService>;
+  get: (id: number) => Promise<LaundryService>;
+  create: (service: LaundryServiceRequest) => Promise<LaundryService>;
+  update: (service: LaundryService) => Promise<LaundryService>;
+  delete: (id: number) => Promise<LaundryService>;
 }
 
 export interface OrderContract {

@@ -39,13 +39,19 @@ export type LaundryBranch = {
 } & TableMetaData;
 
 export type LaundryService = {
+  id: number;
+} & TableMetaData &
+  LaundryServiceRequest;
+
+export type LaundryServiceRequest = {
   pricing_type: "weight" | "piece" | null;
   service_time_hour: number | null;
   price: number | null;
   name: string | null;
   code: string | null;
-  id: number;
-} & TableMetaData;
+  created_by: string | null;
+  created_at: string | null;
+};
 
 export type LaundryServiceTask = {
   service_id: number | null;
