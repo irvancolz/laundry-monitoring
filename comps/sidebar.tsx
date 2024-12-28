@@ -60,7 +60,7 @@ export default function Sidebar() {
     },
     {
       label: "Laundry",
-      href: "/laundry",
+      href: "/laundry/service",
       icon: <StorefrontOutlined />,
     },
   ];
