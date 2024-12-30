@@ -22,8 +22,14 @@ export interface ApiContract {
 export interface LaundryServiceApiContract {
   getAll: () => Promise<LaundryService[]>;
   get: (id: number) => Promise<LaundryService>;
-  create: (service: LaundryServiceRequest) => Promise<LaundryService>;
-  update: (service: LaundryService) => Promise<LaundryService>;
+  create: (
+    service: LaundryServiceRequest,
+    tasks: OrderTask[]
+  ) => Promise<LaundryService>;
+  update: (
+    service: LaundryService,
+    tasks: OrderTask[]
+  ) => Promise<LaundryService>;
   delete: (id: number) => Promise<LaundryService>;
 }
 
@@ -53,4 +59,10 @@ export interface OrderProgressApiContract {
 
 export interface LaundryServiceTaskContract {
   get: (service_id: number) => Promise<ServiceTask[]>;
+  create: (
+    tasks: Pick<ServiceTask, "laundry_service_id" | "order_task_id">[]
+  ) => Promise<ServiceTask[]>;
+  delete: (
+    tasks: Pick<ServiceTask, "laundry_service_id" | "order_task_id">[]
+  ) => Promise<ServiceTask[]>;
 }

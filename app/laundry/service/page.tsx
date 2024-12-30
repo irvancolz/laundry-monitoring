@@ -7,9 +7,11 @@ import TextInput from "@/comps/text-input";
 import Topbar from "@/comps/topbar";
 import { LaundryService } from "@/type/laundry";
 import { Stack } from "@mui/material";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Page() {
+  const router = useRouter();
   const [services, setServices] = useState<LaundryService[]>([]);
   const [query, setQuery] = useState<string>("");
 
@@ -38,7 +40,12 @@ export default function Page() {
             value={query}
             onChange={(e) => setQuery(() => e.target.value)}
           />
-          <Button variant="outlined">Tambah</Button>
+          <Button
+            variant="outlined"
+            onClick={() => router.push("/laundry/service/create")}
+          >
+            Tambah
+          </Button>
         </Stack>
         <Stack sx={{ gap: "1rem" }}>
           {services

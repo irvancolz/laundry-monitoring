@@ -12,15 +12,16 @@ import {
 import Text from "./text";
 import { MenuIcon } from "./icon/menu";
 import {
-  Delete,
   DeleteOutline,
   EditOutlined,
   PaidOutlined,
   Schedule,
 } from "@mui/icons-material";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function ServiceCard(service: LaundryService) {
+  const router = useRouter();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -95,15 +96,15 @@ export default function ServiceCard(service: LaundryService) {
         <MenuList dense sx={{ padding: ".25rem" }}>
           <MenuItem>
             <ListItemIcon>
-              <EditOutlined />
+              <EditOutlined sx={{ color: "primary.main" }} />
             </ListItemIcon>
-            <ListItemText>Update</ListItemText>
+            <ListItemText>Edit</ListItemText>
           </MenuItem>
           <MenuItem sx={{ color: "error.main" }}>
             <ListItemIcon>
               <DeleteOutline sx={{ color: "error.main" }} />
             </ListItemIcon>
-            <ListItemText>Delete</ListItemText>
+            <ListItemText>Hapus</ListItemText>
           </MenuItem>
         </MenuList>
       </Menu>

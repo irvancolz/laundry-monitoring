@@ -1,6 +1,10 @@
-import { LaundryService, LaundryServiceRequest } from "@/type/laundry";
+import {
+  LaundryService,
+  LaundryServiceRequest,
+  OrderTask,
+} from "@/type/laundry";
 import { LaundryServiceApiContract } from "@/api/contract";
-import { supabase } from ".";
+import { supabase, supabaseApi } from ".";
 import { SUPABASE_SERVICE_TABLE } from "./const";
 import { date } from "@/utils/date";
 
@@ -30,7 +34,10 @@ async function get(id: number): Promise<LaundryService> {
   return data as LaundryService;
 }
 
-async function create(service: LaundryServiceRequest): Promise<LaundryService> {
+async function create(
+  service: LaundryServiceRequest,
+  task: OrderTask[]
+): Promise<LaundryService> {
   service.created_by = "PLACEHOLDER";
   service.created_at = date.currentTime();
 
@@ -50,10 +57,33 @@ async function create(service: LaundryServiceRequest): Promise<LaundryService> {
     .single();
 
   if (error != null) throw error;
+
+  // generate tasks
+  await supabaseApi.serviceTask.create(
+    task.map((el) => ({ laundry_service_id: data.id, order_task_id: el.id }))
+  );
+
   return data;
 }
 
-async function update(service: LaundryService): Promise<LaundryService> {
+async function update(
+  service: LaundryService,
+  tasks: OrderTask[]
+): Promise<LaundryService> {
+  // update tasks
+  const existingTasks = await supabaseApi.serviceTask.get(service.id);
+
+  const deletedTasks = existingTasks
+    .filter((ex) => tasks.find((nw) => nw.id != ex.id) != null)
+    .map((el) => ({ laundry_service_id: service.id, order_task_id: el.id }));
+  await supabaseApi.serviceTask.delete(deletedTasks);
+
+  const newTasks = tasks
+    .filter((nw) => existingTasks.find((ex) => ex.id != nw.id) != null)
+    .map((el) => ({ laundry_service_id: service.id, order_task_id: el.id }));
+  await supabaseApi.serviceTask.create(newTasks);
+
+  // update service
   const updatePayload = {
     name: service.name,
     pricing_type: service.pricing_type,
