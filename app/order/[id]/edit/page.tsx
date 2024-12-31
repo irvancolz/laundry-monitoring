@@ -19,7 +19,7 @@ import { useModal } from "@/context/modal-ctx";
 
 export default function Page() {
   const router = useRouter();
-  const { handleError } = useModal();
+  const { handleError, notif } = useModal();
   const [data, setData] = useState<Order | null>();
   const [branch, setBranch] = useState<Option[]>([]);
   const [services, setServices] = useState<LaundryService[]>([]);
@@ -46,16 +46,19 @@ export default function Page() {
     async function getOrder() {
       const order = await api.order.get(id);
       setData(() => order);
-
-      if (order == null || services.length <= 0) return;
-      const selectedService = services.find((el) => el.id == order.service_id);
-
-      if (!selectedService) return;
-      setService(() => selectedService);
     }
 
     getOrder();
   }, [id, services]);
+
+  useEffect(() => {
+    async function getService() {
+      if (!data?.service_id) return;
+      const resp = await api.laundryService.get(data.service_id);
+      setService(() => resp);
+    }
+    getService();
+  }, [data]);
 
   if (data == null) {
     return (
