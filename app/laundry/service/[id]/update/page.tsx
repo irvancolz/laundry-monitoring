@@ -9,7 +9,7 @@ import Text from "@/comps/text";
 import TextInput from "@/comps/text-input";
 import Topbar from "@/comps/topbar";
 import { useModal } from "@/context/modal-ctx";
-import { LaundryService, Order, OrderTask } from "@/type/laundry";
+import { LaundryService, OrderTask } from "@/type/laundry";
 import { date } from "@/utils/date";
 import {
   CancelOutlined,

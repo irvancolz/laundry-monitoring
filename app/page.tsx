@@ -5,14 +5,46 @@ import OrderCard from "@/comps/order-card";
 import Text from "@/comps/text";
 import TextInput from "@/comps/text-input";
 import Topbar from "@/comps/topbar";
+import { useSidebar } from "@/context/sidebar";
 import { Order } from "@/type/laundry";
 import { FilterAlt, LocalLaundryServiceOutlined } from "@mui/icons-material";
-import { Box, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
+import {
+  GroupOutlined,
+  HomeOutlined,
+  Inventory2Outlined,
+  StorefrontOutlined,
+} from "@mui/icons-material";
+import { SidebarLink } from "@/type/general";
+
+const mainUrls: SidebarLink[] = [
+  {
+    label: "Dashboard",
+    href: "/",
+    icon: <HomeOutlined />,
+  },
+  {
+    label: "Pesanan",
+    href: "/order",
+    icon: <Inventory2Outlined />,
+  },
+  {
+    label: "Pegawai",
+    href: "/employee",
+    icon: <GroupOutlined />,
+  },
+  {
+    label: "Laundry",
+    href: "/laundry/service",
+    icon: <StorefrontOutlined />,
+  },
+];
 
 export default function Home() {
+  const { setMainMenus } = useSidebar();
   const [order, setOrder] = useState<Order[]>([]);
 
   useEffect(() => {
@@ -21,6 +53,7 @@ export default function Home() {
       setOrder(() => resp);
     }
     getOrder();
+    setMainMenus(mainUrls);
   }, []);
 
   return (

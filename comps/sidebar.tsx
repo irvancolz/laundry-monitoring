@@ -2,7 +2,6 @@
 
 import { useSidebar } from "@/context/sidebar";
 import {
-  Box,
   Drawer,
   List,
   ListItem,
@@ -14,15 +13,9 @@ import {
 import logo from "@/public/laundry-logo-color.png";
 import {
   ExitToAppOutlined,
-  GroupOutlined,
-  HomeOutlined,
-  Inventory2Outlined,
   Person2Outlined,
-  StorefrontOutlined,
 } from "@mui/icons-material";
-import { ReactElement } from "react";
-
-type SidebarLink = { href: string; icon: ReactElement; label: string };
+import { SidebarLink } from "@/type/general";
 
 function SibebarMenu(url: SidebarLink) {
   return (
@@ -40,30 +33,7 @@ function SibebarMenu(url: SidebarLink) {
 }
 
 export default function Sidebar() {
-  const { opened, close } = useSidebar();
-
-  const mainUrls: SidebarLink[] = [
-    {
-      label: "Dashboard",
-      href: "/",
-      icon: <HomeOutlined />,
-    },
-    {
-      label: "Pesanan",
-      href: "/order",
-      icon: <Inventory2Outlined />,
-    },
-    {
-      label: "Pegawai",
-      href: "/employee",
-      icon: <GroupOutlined />,
-    },
-    {
-      label: "Laundry",
-      href: "/laundry/service",
-      icon: <StorefrontOutlined />,
-    },
-  ];
+  const { opened, close, mainMenus } = useSidebar();
 
   const bottomUrls: SidebarLink[] = [
     {
@@ -93,7 +63,7 @@ export default function Sidebar() {
           }}
         >
           <List>
-            {mainUrls.map((url, i) => {
+            {mainMenus.map((url, i) => {
               return <SibebarMenu key={i} {...url} />;
             })}
           </List>
