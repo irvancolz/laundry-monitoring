@@ -1,6 +1,6 @@
 "use client";
 import {
-  DateTimeField as BaseDatePicker,
+  DatePicker as BaseDatePicker,
   DateTimeFieldProps,
 } from "@mui/x-date-pickers";
 import dayjs from "dayjs";

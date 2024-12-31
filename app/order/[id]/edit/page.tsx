@@ -16,6 +16,7 @@ import Select from "@/comps/select";
 import dayjs from "dayjs";
 import OrderNotFound from "@/comps/order-not-found";
 import { useModal } from "@/context/modal-ctx";
+import { date } from "@/utils/date";
 
 export default function Page() {
   const router = useRouter();
@@ -193,11 +194,15 @@ export default function Page() {
               label="tanggal masuk"
               value={dayjs(data.created_at)}
               disabled
+              disablePast
             />
             <DatePicker
               label="tanggal selesai"
               value={dayjs(data.finish_expectation)}
-              disabled
+              onChange={(e) => {
+                console.log(e);
+              }}
+              disablePast
             />
           </Stack>
           <Stack direction="row" justifyContent="space-between" gap="1rem">

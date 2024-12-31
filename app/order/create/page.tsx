@@ -158,7 +158,13 @@ export default function Page() {
               label="tanggal selesai"
               defaultValue={dayjs(data.finish_expectation)}
               value={dayjs(data.finish_expectation)}
-              disabled
+              disablePast
+              onChange={(e) =>
+                setData((prev) => ({
+                  ...prev,
+                  finish_expectation: e.format("YYYY-MM-DD HH:mm"),
+                }))
+              }
             />
           </Stack>
           <Stack direction="row" justifyContent="space-between" gap="1rem">
