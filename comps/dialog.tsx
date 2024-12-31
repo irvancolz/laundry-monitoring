@@ -9,7 +9,8 @@ import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Text from "./text";
-import { useModal } from "@/context/modal-ctx";
+import { ModalSeverity, useModal } from "@/context/modal-ctx";
+import { Stack } from "@mui/material";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -21,8 +22,34 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
+const infoTitle: Record<ModalSeverity, string> = {
+  error: "terjadi kesalahan",
+  info: "pemberitahuan",
+  success: "berhasil",
+};
+
 export default function Modal() {
-  const { opened, message, close } = useModal();
+  const { opened, message, close, severity, title, type, onAccept, onReject } =
+    useModal();
+
+  function accept() {
+    if (!onAccept) return;
+    onAccept();
+  }
+
+  function reject() {
+    onReject?.();
+    close();
+  }
+
+  const infoModalActions = <Button onClick={close}>Mengerti</Button>;
+
+  const confirmModalActions = (
+    <Stack direction="row" sx={{ gap: ".5rem" }}>
+      <Button onClick={reject}>Batalkan</Button>
+      <Button onClick={accept}>Lanjutkan</Button>
+    </Stack>
+  );
 
   return (
     <BootstrapDialog
@@ -30,8 +57,11 @@ export default function Modal() {
       aria-labelledby="customized-dialog-title"
       open={opened}
     >
-      <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-        Terjadi Kesalahan
+      <DialogTitle
+        sx={{ m: 0, p: 2, textTransform: "capitalize" }}
+        id="customized-dialog-title"
+      >
+        {type == "notif" ? infoTitle[severity] : title}
       </DialogTitle>
       <IconButton
         aria-label="close"
@@ -46,12 +76,10 @@ export default function Modal() {
         <CloseIcon />
       </IconButton>
       <DialogContent dividers>
-        <Text>{message}</Text>
+        <Text>{type == "notif" ? message : "apakah anda yakin ?"}</Text>
       </DialogContent>
       <DialogActions>
-        <Button autoFocus onClick={close}>
-          Mengerti
-        </Button>
+        {type == "notif" ? infoModalActions : confirmModalActions}
       </DialogActions>
     </BootstrapDialog>
   );

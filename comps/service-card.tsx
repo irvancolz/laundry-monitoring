@@ -19,17 +19,39 @@ import {
 } from "@mui/icons-material";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useModal } from "@/context/modal-ctx";
+import { api } from "@/api";
 
 export default function ServiceCard(service: LaundryService) {
   const router = useRouter();
+  const modal = useModal();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(() => null);
   };
+
+  async function deleteService() {
+    try {
+      await api.laundryService.delete(service.id);
+      modal.notif("success", "layanan berhasil dihapus");
+    } catch (error) {
+      modal.handleError(error);
+    }
+  }
+
+  function handleDelete() {
+    modal.confirm({
+      title: "hapus layanan",
+      onAccept: () => deleteService,
+    });
+  }
+
   return (
     <>
       <Stack
@@ -102,7 +124,7 @@ export default function ServiceCard(service: LaundryService) {
             </ListItemIcon>
             <ListItemText>Edit</ListItemText>
           </MenuItem>
-          <MenuItem sx={{ color: "error.main" }}>
+          <MenuItem sx={{ color: "error.main" }} onClick={handleDelete}>
             <ListItemIcon>
               <DeleteOutline sx={{ color: "error.main" }} />
             </ListItemIcon>

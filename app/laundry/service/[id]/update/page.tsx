@@ -46,6 +46,7 @@ export default function Page() {
   async function submit() {
     try {
       await api.laundryService.update(payload, selectedTasks);
+      modal.notif("success", "layanan berhasil dirubah");
       router.back();
     } catch (error) {
       modal.handleError(error);
