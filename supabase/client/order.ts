@@ -1,4 +1,10 @@
-import { Order, OrderRequest, OrderTask, TableMetaData } from "@/type/laundry";
+import {
+  Order,
+  OrderRequest,
+  OrderStatus,
+  OrderTask,
+  TableMetaData,
+} from "@/type/laundry";
 import { OrderContract } from "@/api/contract";
 import { supabase, supabaseApi } from ".";
 import {
@@ -206,10 +212,40 @@ async function getCurrentProgress(
   return taskTc.data;
 }
 
+async function cancel(order_id: string): Promise<Order> {
+  const updatePayload: OrderRequest & {
+    id: string;
+    status: OrderStatus;
+  } & TableMetaData = {
+    id: order_id,
+    updated_at: dayjs().format("DD/MM/YYYY HH:mm:ss"),
+    updated_by: "PLACEHOLDER",
+    status: "canceled",
+  } as OrderRequest & { id: string; status: OrderStatus } & TableMetaData;
+
+  const { data, error } = await supabase
+    .from(SUPABASE_ORDER_TABLE)
+    .update(updatePayload)
+    .eq("id", updatePayload.id)
+    .select()
+    .single();
+  if (error != null) throw error;
+
+  const progress = await getCurrentProgress(updatePayload.id);
+
+  const result: Order = {
+    ...data,
+    current_progress: progress.name || "",
+  };
+
+  return result;
+}
+
 export const orderApi: OrderContract = {
   create,
   getAll,
   update,
   get,
   getCurrentProgress,
+  cancel,
 };

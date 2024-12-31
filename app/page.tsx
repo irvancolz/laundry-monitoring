@@ -8,9 +8,9 @@ import Topbar from "@/comps/topbar";
 import { useSidebar } from "@/context/sidebar";
 import { Order } from "@/type/laundry";
 import { FilterAlt, LocalLaundryServiceOutlined } from "@mui/icons-material";
-import { Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
   GroupOutlined,
@@ -44,6 +44,7 @@ const mainUrls: SidebarLink[] = [
 ];
 
 export default function Home() {
+  const router = useRouter();
   const { setMainMenus } = useSidebar();
   const [order, setOrder] = useState<Order[]>([]);
 
@@ -85,9 +86,9 @@ export default function Home() {
           <Stack sx={{ height: "20rem", overflow: "scroll", gap: ".75rem" }}>
             {order.map((item, i) => {
               return (
-                <Link key={i} href={`order/${item.id}`}>
+                <Box key={i} onClick={() => router.push(`order/${item.id}`)}>
                   <OrderCard order={item} />
-                </Link>
+                </Box>
               );
             })}
           </Stack>
