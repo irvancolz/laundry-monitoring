@@ -94,7 +94,9 @@ export default function ServiceCard(service: LaundryService) {
         sx={{ padding: ".25rem" }}
       >
         <MenuList dense sx={{ padding: ".25rem" }}>
-          <MenuItem>
+          <MenuItem
+            onClick={() => router.push(`/laundry/service/${service.id}/update`)}
+          >
             <ListItemIcon>
               <EditOutlined sx={{ color: "primary.main" }} />
             </ListItemIcon>

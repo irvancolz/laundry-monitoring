@@ -31,6 +31,7 @@ export interface LaundryServiceApiContract {
     tasks: OrderTask[]
   ) => Promise<LaundryService>;
   delete: (id: number) => Promise<LaundryService>;
+  getTasks: (id: number) => Promise<OrderTask[]>;
 }
 
 export interface OrderContract {

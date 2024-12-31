@@ -5,7 +5,11 @@ import {
 } from "@/type/laundry";
 import { LaundryServiceApiContract } from "@/api/contract";
 import { supabase, supabaseApi } from ".";
-import { SUPABASE_SERVICE_TABLE } from "./const";
+import {
+  SUPABASE_SERVICE_TABLE,
+  SUPABASE_SERVICE_TASK_TABLE,
+  SUPABASE_TASK_TABLE,
+} from "./const";
 import { date } from "@/utils/date";
 
 async function getAll(): Promise<LaundryService[]> {
@@ -74,12 +78,17 @@ async function update(
   const existingTasks = await supabaseApi.serviceTask.get(service.id);
 
   const deletedTasks = existingTasks
-    .filter((ex) => tasks.find((nw) => nw.id != ex.id) != null)
-    .map((el) => ({ laundry_service_id: service.id, order_task_id: el.id }));
+    .filter((ex) => tasks.find((nw) => nw.id == ex.order_task_id) == undefined)
+    .map((el) => ({
+      laundry_service_id: service.id,
+      order_task_id: el.order_task_id,
+    }));
   await supabaseApi.serviceTask.delete(deletedTasks);
 
   const newTasks = tasks
-    .filter((nw) => existingTasks.find((ex) => ex.id != nw.id) != null)
+    .filter(
+      (nw) => existingTasks.find((ex) => ex.order_task_id == nw.id) == undefined
+    )
     .map((el) => ({ laundry_service_id: service.id, order_task_id: el.id }));
   await supabaseApi.serviceTask.create(newTasks);
 
@@ -122,10 +131,33 @@ async function remove(id: number): Promise<LaundryService> {
   return data;
 }
 
+async function getTasks(id: number): Promise<OrderTask[]> {
+  const existingTasks = await supabase
+    .from(SUPABASE_SERVICE_TASK_TABLE)
+    .select()
+    .eq("laundry_service_id", id)
+    .eq("is_deleted", false);
+
+  if (existingTasks.error != null) throw existingTasks.error;
+
+  const tasks = await supabase
+    .from(SUPABASE_TASK_TABLE)
+    .select()
+    .in(
+      "id",
+      existingTasks.data.map((el) => el.order_task_id)
+    );
+
+  if (tasks.error != null) throw tasks.error;
+
+  return tasks.data;
+}
+
 export const laundryServiceApi: LaundryServiceApiContract = {
   getAll,
   get,
   create,
   update,
   delete: remove,
+  getTasks,
 };

@@ -14,6 +14,7 @@ async function get(service_id: number): Promise<ServiceTask[]> {
     throw new Error("service task not found");
   return data;
 }
+
 async function create(
   tasks: Pick<ServiceTask, "laundry_service_id" | "order_task_id">[]
 ): Promise<ServiceTask[]> {
@@ -30,6 +31,7 @@ async function create(
 
   return data;
 }
+
 async function remove(
   tasks: Pick<ServiceTask, "laundry_service_id" | "order_task_id">[]
 ): Promise<ServiceTask[]> {

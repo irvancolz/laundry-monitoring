@@ -23,6 +23,10 @@ export default function ServiceTaskSelector({
   }
 
   useEffect(() => {
+    setSelectedTasks(() => value);
+  }, [value]);
+
+  useEffect(() => {
     onChange(selectedTasks);
   }, [selectedTasks]);
 
