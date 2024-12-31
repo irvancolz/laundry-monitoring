@@ -92,12 +92,12 @@ export type Database = {
           finish_expectation: string | null
           id: string
           is_deleted: boolean | null
-          is_finished: boolean | null
           notes: string | null
           price: number | null
           qty: number | null
           service_id: number | null
           service_name: string | null
+          status: Database["public"]["Enums"]["laundry_order_status"] | null
           updated_at: string | null
           updated_by: string | null
         }
@@ -113,12 +113,12 @@ export type Database = {
           finish_expectation?: string | null
           id?: string
           is_deleted?: boolean | null
-          is_finished?: boolean | null
           notes?: string | null
           price?: number | null
           qty?: number | null
           service_id?: number | null
           service_name?: string | null
+          status?: Database["public"]["Enums"]["laundry_order_status"] | null
           updated_at?: string | null
           updated_by?: string | null
         }
@@ -134,12 +134,12 @@ export type Database = {
           finish_expectation?: string | null
           id?: string
           is_deleted?: boolean | null
-          is_finished?: boolean | null
           notes?: string | null
           price?: number | null
           qty?: number | null
           service_id?: number | null
           service_name?: string | null
+          status?: Database["public"]["Enums"]["laundry_order_status"] | null
           updated_at?: string | null
           updated_by?: string | null
         }
@@ -378,6 +378,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
+      laundry_order_status: "finished" | "onprogress" | "canceled"
       service_pricing_type: "weight" | "piece"
     }
     CompositeTypes: {

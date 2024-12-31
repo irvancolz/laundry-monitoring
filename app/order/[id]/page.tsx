@@ -7,12 +7,24 @@ import OrderNotFound from "@/comps/order-not-found";
 import OrderTracking from "@/comps/order-tracking";
 import Text from "@/comps/text";
 import Topbar from "@/comps/topbar";
-import { Order, OrderTask } from "@/type/laundry";
+import { Order, OrderStatus, OrderTask } from "@/type/laundry";
 import { ArrowBack, EditOutlined, Menu } from "@mui/icons-material";
-import { Alert, AlertTitle, IconButton, Stack } from "@mui/material";
+import {
+  Alert,
+  AlertColor,
+  AlertTitle,
+  IconButton,
+  Stack,
+} from "@mui/material";
 import Link from "next/link";
 import { redirect, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+
+const alertVariant: Record<OrderStatus, AlertColor> = {
+  canceled: "error",
+  finished: "success",
+  onprogress: "info",
+};
 
 export default function Page() {
   const [order, setOrder] = useState<Order | null>();
@@ -55,7 +67,7 @@ export default function Page() {
       </Stack>
       <Stack sx={{ gap: "2rem", marginBlock: "3rem" }}>
         <Alert
-          severity={order.is_finished ? "success" : "info"}
+          severity={alertVariant[order.status || "canceled"]}
           variant="outlined"
         >
           <AlertTitle>{position?.name}</AlertTitle>

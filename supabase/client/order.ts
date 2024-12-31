@@ -55,7 +55,7 @@ async function create(order: OrderRequest): Promise<Order> {
     ...order,
     ...data[0],
     id: data[0].id,
-    is_finished: false,
+    status: "onprogress",
     is_deleted: false,
     service_name: service.name,
     current_progress: progress.data.order_task?.name || "",
@@ -113,16 +113,17 @@ async function update(order: Order): Promise<Order> {
     .from(SUPABASE_ORDER_TABLE)
     .update(updatePayload)
     .eq("id", updatePayload.id)
-    .select();
+    .select()
+    .single();
   if (error != null) throw error;
 
   const progress = await getCurrentProgress(updatePayload.id);
 
   const result: Order = {
     ...order,
-    ...data[0],
-    id: data[0].id,
-    is_finished: false,
+    ...data,
+    id: data.id,
+    status: data.status,
     is_deleted: false,
     service_name: service.name,
     current_progress: progress.name || "",
@@ -160,6 +161,23 @@ async function getAll(): Promise<Order[]> {
 async function getCurrentProgress(
   order_id: string
 ): Promise<Pick<OrderTask, "id" | "name" | "order" | "description">> {
+  const order = await supabase
+    .from(SUPABASE_ORDER_TABLE)
+    .select("status")
+    .eq("id", order_id)
+    .single();
+  if (order.error != null) throw order.error;
+
+  if (order.data.status == "canceled") {
+    const resp = {
+      id: 0,
+      name: "dibatalkan",
+      description: "pesanan ini telah dibatalkan",
+      order: 0,
+    };
+    return resp;
+  }
+
   const { data: progress, error } = await supabase
     .from(SUPABASE_ORDER_PROGRESS_TABLE)
     .select("order_task_id")

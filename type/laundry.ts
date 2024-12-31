@@ -7,10 +7,12 @@ export type TableMetaData = {
   deleted_by: string | null;
 };
 
+export type OrderStatus = "finished" | "onprogress" | "canceled";
+
 export type Order = {
   id: string;
   is_deleted: boolean | null;
-  is_finished: boolean | null;
+  status: OrderStatus | null;
   current_progress: string | null;
 } & OrderRequest &
   TableMetaData;
