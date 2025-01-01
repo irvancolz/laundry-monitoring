@@ -17,7 +17,7 @@ import {
   Stack,
 } from "@mui/material";
 import Link from "next/link";
-import { redirect, useParams } from "next/navigation";
+import { redirect, useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const alertVariant: Record<OrderStatus, AlertColor> = {
@@ -27,6 +27,7 @@ const alertVariant: Record<OrderStatus, AlertColor> = {
 };
 
 export default function Page() {
+  const router = useRouter();
   const [order, setOrder] = useState<Order | null>();
   const [position, setPosition] =
     useState<Pick<OrderTask, "id" | "name" | "order" | "description">>();
@@ -94,7 +95,9 @@ export default function Page() {
         >
           Perbarui Pesanan
         </Button>
-        <Button startIcon={<ArrowBack />}>Kembali Ke Beranda </Button>
+        <Button startIcon={<ArrowBack />} onClick={() => router.back()}>
+          Kembali Ke Beranda
+        </Button>
       </BottomBar>
     </>
   );

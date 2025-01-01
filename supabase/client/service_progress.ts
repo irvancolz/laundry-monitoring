@@ -1,7 +1,11 @@
 import { OrderTaskProgress } from "@/type/laundry";
 import { supabase, supabaseApi } from ".";
 import { OrderProgressApiContract } from "@/api/contract";
-import { SUPABASE_ORDER_PROGRESS_TABLE, SUPABASE_TASK_TABLE } from "./const";
+import {
+  SUPABASE_ORDER_PROGRESS_TABLE,
+  SUPABASE_ORDER_TABLE,
+  SUPABASE_TASK_TABLE,
+} from "./const";
 
 async function generate(service_id: number, order_id: string) {
   const services = await supabaseApi.serviceTask.get(service_id);
@@ -31,6 +35,14 @@ async function generate(service_id: number, order_id: string) {
 }
 
 async function get(order_id: string): Promise<OrderTaskProgress[]> {
+  const order = await supabase
+    .from(SUPABASE_ORDER_TABLE)
+    .select()
+    .eq("id", order_id)
+    .single();
+  if (order.error != null) throw order.error;
+
+  // i still can't figure how to order the progress based on each task order
   const progress = await supabase
     .from(SUPABASE_ORDER_PROGRESS_TABLE)
     .select(
@@ -61,7 +73,38 @@ async function get(order_id: string): Promise<OrderTaskProgress[]> {
     result.push(resp);
   }
 
-  return result.sort((a, b) => a.order! - b.order!);
+  const orderedResult = result.sort((a, b) => a.order! - b.order!);
+  // add flag to canceled order
+  const tempResp: OrderTaskProgress[] = [];
+  for (let i = 0; i < orderedResult.length; i++) {
+    if (order.data.status == "canceled" && orderedResult[i].finished == false) {
+      const cancelProgress: OrderTaskProgress = {
+        finished: false,
+        id: "0",
+        name: "dibatalkan",
+        order: 9999,
+        laundry_order_id: order_id,
+        description: "pesanan ini telah dibatalkan dari sistem",
+      } as OrderTaskProgress;
+      tempResp.push(cancelProgress);
+      return tempResp;
+    }
+    tempResp.push(orderedResult[i]);
+  }
+  // add flag to finished order
+  if (order.data.status == "finished") {
+    const finishedProgress: OrderTaskProgress = {
+      finished: false,
+      id: "0",
+      name: "selesai",
+      order: 9999,
+      laundry_order_id: order_id,
+      description: "pesanan ini telah selesai dan telah diambil oleh pelanggan",
+    } as OrderTaskProgress;
+    orderedResult.push(finishedProgress);
+  }
+
+  return orderedResult;
 }
 
 export const orderProgressApi: OrderProgressApiContract = { get, generate };

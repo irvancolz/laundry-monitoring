@@ -19,6 +19,7 @@ import {
   StorefrontOutlined,
 } from "@mui/icons-material";
 import { SidebarLink } from "@/type/general";
+import BottomBar from "@/comps/bottom-bar";
 
 const mainUrls: SidebarLink[] = [
   {
@@ -81,24 +82,25 @@ export default function Home() {
         <Stack
           sx={{
             flexGrow: 1,
+            gap: "1rem",
           }}
         >
-          <Stack sx={{ height: "20rem", overflow: "scroll", gap: ".75rem" }}>
-            {order.map((item, i) => {
-              return (
-                <Box key={i} onClick={() => router.push(`order/${item.id}`)}>
-                  <OrderCard order={item} />
-                </Box>
-              );
-            })}
-          </Stack>
+          {order.map((item, i) => {
+            return (
+              <Box key={i} onClick={() => router.push(`order/${item.id}`)}>
+                <OrderCard order={item} />
+              </Box>
+            );
+          })}
         </Stack>
-        <Button
-          startIcon={<LocalLaundryServiceOutlined fontSize="inherit" />}
-          onClick={() => redirect("/order/create")}
-        >
-          Tambah Pesanan
-        </Button>
+        <BottomBar>
+          <Button
+            startIcon={<LocalLaundryServiceOutlined fontSize="inherit" />}
+            onClick={() => redirect("/order/create")}
+          >
+            Tambah Pesanan
+          </Button>
+        </BottomBar>
       </Stack>
     </>
   );

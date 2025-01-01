@@ -142,7 +142,8 @@ async function getAll(): Promise<Order[]> {
   const { data, error } = await supabase
     .from(SUPABASE_ORDER_TABLE)
     .select()
-    .eq("is_deleted", false);
+    .eq("is_deleted", false)
+    .order("created_at", { ascending: false });
 
   if (error != null) {
     throw error;
@@ -179,6 +180,15 @@ async function getCurrentProgress(
       id: 0,
       name: "dibatalkan",
       description: "pesanan ini telah dibatalkan",
+      order: 0,
+    };
+    return resp;
+  }
+  if (order.data.status == "finished") {
+    const resp = {
+      id: 0,
+      name: "selesai",
+      description: "pesanan ini telah selesai dan telah diambil oleh pelanggan",
       order: 0,
     };
     return resp;
@@ -241,6 +251,51 @@ async function cancel(order_id: string): Promise<Order> {
   return result;
 }
 
+async function proceed(order_id: string): Promise<Order> {
+  const { data, count, error } = await supabase
+    .from(SUPABASE_ORDER_PROGRESS_TABLE)
+    .select(`order_task_id`, { count: "exact" })
+    .eq("finished", false)
+    .eq("laundry_order_id", order_id);
+  if (error != null) throw error;
+
+  // get the next progress
+  const tasks = await supabase
+    .from(SUPABASE_TASK_TABLE)
+    .select()
+    .in(
+      "id",
+      data.map((el) => el.order_task_id)
+    )
+    .order("order", { ascending: true })
+    .limit(1)
+    .single();
+  if (tasks.error) throw tasks.error;
+
+  // update next progress
+  const updatedTasks = await supabase
+    .from(SUPABASE_ORDER_PROGRESS_TABLE)
+    .update({ finished: true })
+    .eq("laundry_order_id", order_id)
+    .eq("order_task_id", tasks.data.id);
+
+  if (updatedTasks.error != null) throw updatedTasks.error;
+
+  // mark as completed, if its the last task need to be done
+  if (count == 1) {
+    const updatedOrder = await supabase
+      .from(SUPABASE_ORDER_TABLE)
+      .update({ status: "finished" })
+      .eq("id", order_id);
+
+    if (updatedOrder.error != null) throw updatedOrder.error;
+  }
+
+  const result = await supabaseApi.order.get(order_id);
+
+  return result!;
+}
+
 export const orderApi: OrderContract = {
   create,
   getAll,
@@ -248,4 +303,5 @@ export const orderApi: OrderContract = {
   get,
   getCurrentProgress,
   cancel,
+  proceed,
 };

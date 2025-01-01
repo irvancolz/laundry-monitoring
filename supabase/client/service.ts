@@ -114,6 +114,13 @@ async function update(
 }
 
 async function remove(id: number): Promise<LaundryService> {
+  // remove the unused tasks
+  const deletedTasks = await supabase
+    .from(SUPABASE_SERVICE_TASK_TABLE)
+    .update({ is_deleted: true })
+    .eq("laundry_service_id", id);
+  if (deletedTasks.error != null) throw deletedTasks.error;
+
   const deletePayload = {
     is_deleted: true,
     deleted_by: "PLACEHOLDER",

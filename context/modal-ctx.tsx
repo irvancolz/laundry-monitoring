@@ -54,6 +54,8 @@ export default function ModalContextProvider({
   }
 
   function handleError(e: any) {
+    console.log(e);
+
     setType("notif");
     setSeverity("error");
     setOpened(() => true);

@@ -50,6 +50,23 @@ export default function OrderCard({ order }: { order: Order }) {
     });
   }
 
+  async function proceedOrder() {
+    try {
+      await api.order.proceed(order.id);
+      modal.notif("success", "pesanan berhasil masuk ke tahap berikutnya");
+    } catch (error) {
+      modal.handleError(error);
+    }
+  }
+
+  function handleProceed(event: React.MouseEvent) {
+    event.stopPropagation();
+    modal.confirm({
+      title: "proses pesanan",
+      onAccept: () => proceedOrder,
+    });
+  }
+
   return (
     <>
       <Box sx={{ p: ".75rem", backgroundColor: "#fff", borderRadius: ".4rem" }}>
@@ -125,7 +142,7 @@ export default function OrderCard({ order }: { order: Order }) {
         sx={{ padding: ".25rem" }}
       >
         <MenuList dense sx={{ padding: ".25rem" }}>
-          <MenuItem>
+          <MenuItem onClick={handleProceed}>
             <ListItemIcon>
               <StartOutlined sx={{ color: "primary.main" }} />
             </ListItemIcon>
