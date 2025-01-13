@@ -1,5 +1,6 @@
 import {
   LaundryBranch,
+  LaundryBranchRequest,
   LaundryService,
   LaundryServiceRequest,
   Order,
@@ -57,6 +58,9 @@ export interface OrderTaskContract {
 export interface LaundryBranchApiContract {
   getAll: () => Promise<LaundryBranch[]>;
   get: (id: number) => Promise<LaundryBranch>;
+  create: (branch: LaundryBranchRequest) => Promise<LaundryBranch>;
+  update: (branch: LaundryBranch) => Promise<LaundryBranch>;
+  delete: (branch: LaundryBranch) => Promise<LaundryBranch>;
 }
 
 export interface OrderProgressApiContract {

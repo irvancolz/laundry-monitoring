@@ -37,7 +37,9 @@ export type Database = {
       laundry_branch: {
         Row: {
           address: string | null
+          close_hour: string | null
           code: string | null
+          contact: string | null
           created_at: string | null
           created_by: string | null
           deleted_at: string | null
@@ -46,12 +48,15 @@ export type Database = {
           is_deleted: boolean | null
           is_washing_station: boolean | null
           name: string | null
+          open_hour: string | null
           updated_at: string | null
           updated_by: string | null
         }
         Insert: {
           address?: string | null
+          close_hour?: string | null
           code?: string | null
+          contact?: string | null
           created_at?: string | null
           created_by?: string | null
           deleted_at?: string | null
@@ -60,12 +65,15 @@ export type Database = {
           is_deleted?: boolean | null
           is_washing_station?: boolean | null
           name?: string | null
+          open_hour?: string | null
           updated_at?: string | null
           updated_by?: string | null
         }
         Update: {
           address?: string | null
+          close_hour?: string | null
           code?: string | null
+          contact?: string | null
           created_at?: string | null
           created_by?: string | null
           deleted_at?: string | null
@@ -74,6 +82,7 @@ export type Database = {
           is_deleted?: boolean | null
           is_washing_station?: boolean | null
           name?: string | null
+          open_hour?: string | null
           updated_at?: string | null
           updated_by?: string | null
         }

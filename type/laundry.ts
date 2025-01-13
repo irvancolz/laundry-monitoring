@@ -33,12 +33,21 @@ export type OrderRequest = {
 };
 
 export type LaundryBranch = {
+  id: number;
+} & LaundryBranchRequest &
+  TableMetaData;
+
+export type LaundryBranchRequest = {
+  code: string | null;
   is_washing_station: boolean | null;
   address: string | null;
+  contact: string | null;
+  open_hour: string | null;
+  close_hour: string | null;
   name: string | null;
-  code: string | null;
-  id: number;
-} & TableMetaData;
+  created_at: string | null;
+  created_by: string | null;
+};
 
 export type LaundryService = {
   id: number;

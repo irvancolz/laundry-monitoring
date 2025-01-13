@@ -22,7 +22,7 @@ async function create(task: OrderTaskRequest): Promise<OrderTask> {
   if (existing.error)
     throw new Error("failed to check current existing task total");
 
-  task.code = "SVC" + new String((existing.count || 0) + 1).padStart(3, "0");
+  task.code = "TSK" + new String((existing.count || 0) + 1).padStart(3, "0");
   task.created_by = "PLACEHOLDER";
   task.created_at = date.currentTime();
 
