@@ -8,18 +8,91 @@ import {
   MenuItem,
   MenuList,
   Stack,
+  TextareaAutosize,
 } from "@mui/material";
 import Text from "./text";
 import { MenuIcon } from "./icon/menu";
-import { DeleteOutline, EditOutlined } from "@mui/icons-material";
+import { Close, DeleteOutline, EditOutlined, Save } from "@mui/icons-material";
 import { useState } from "react";
 import { useModal } from "@/context/modal-ctx";
 import { api } from "@/api";
+import { useBottomDrawer } from "@/context/bottom-drawer-ctx";
+import TextInput from "./text-input";
+import Button from "./button";
+
+function UpdateTaskForm({ task }: { task: OrderTask }) {
+  const drawer = useBottomDrawer();
+  const modal = useModal();
+  const [payload, setPayload] = useState<OrderTask>(task);
+
+  function closeForm() {
+    setPayload({
+      name: "",
+      description: "",
+    } as OrderTask);
+    drawer.close();
+  }
+
+  async function handleSubmit() {
+    try {
+      api.orderTask.update(payload);
+      modal.notif("success", "pekerjaan berhasil ditambahkan");
+      closeForm();
+    } catch (error) {
+      modal.handleError(error);
+    }
+  }
+
+  return (
+    <Stack sx={{ gap: "1rem", minHeight: "50vh" }}>
+      <Text component="h2" sx={{ fontSize: "1.5rem", fontWeight: 600 }}>
+        Perbarui Pekerjaan
+      </Text>
+      <Stack sx={{ flexGrow: 1, gap: "1rem" }}>
+        <TextInput
+          label="nama pekerjaan"
+          value={payload.name}
+          onChange={(e) =>
+            setPayload((prev) => ({ ...prev, name: e.target.value }))
+          }
+        />
+        <TextareaAutosize
+          placeholder="deskripsi"
+          value={payload.description!}
+          onChange={(e) =>
+            setPayload((prev) => ({ ...prev, description: e.target.value }))
+          }
+        ></TextareaAutosize>
+        <Text>* pekerjaan baru akan berada di urutan terbawah</Text>
+      </Stack>
+      <Stack gap=".5rem">
+        <Button
+          startIcon={<Close />}
+          type="button"
+          onClick={closeForm}
+          variant="outlined"
+        >
+          Batalkan Pembaruan
+        </Button>
+        <Button startIcon={<Save />} onClick={handleSubmit}>
+          Perbarui Pekerjaan
+        </Button>
+      </Stack>
+    </Stack>
+  );
+}
 
 export default function TaskCard(task: OrderTask) {
   const modal = useModal();
+  const drawer = useBottomDrawer();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+
+  const handleUpdate = () => {
+    drawer.setContent(<UpdateTaskForm task={task} />);
+    drawer.open();
+    setAnchorEl(() => null);
+  };
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -31,7 +104,7 @@ export default function TaskCard(task: OrderTask) {
 
   async function deleteService() {
     try {
-      await api.laundryService.delete(task.id);
+      await api.orderTask.delete(task);
       modal.notif("success", "layanan berhasil dihapus");
     } catch (error) {
       modal.handleError(error);
@@ -90,7 +163,7 @@ export default function TaskCard(task: OrderTask) {
         sx={{ padding: ".25rem" }}
       >
         <MenuList dense sx={{ padding: ".25rem" }}>
-          <MenuItem>
+          <MenuItem onClick={handleUpdate}>
             <ListItemIcon>
               <EditOutlined sx={{ color: "primary.main" }} />
             </ListItemIcon>

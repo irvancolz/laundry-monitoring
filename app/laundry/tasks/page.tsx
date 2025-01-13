@@ -30,6 +30,7 @@ function CreateTaskForm() {
 
   async function handleSubmit() {
     try {
+      api.orderTask.create(payload);
       modal.notif("success", "pekerjaan berhasil ditambahkan");
       closeForm();
     } catch (error) {
@@ -66,10 +67,10 @@ function CreateTaskForm() {
           onClick={closeForm}
           variant="outlined"
         >
-          Batal Perbarui
+          Batalkan
         </Button>
         <Button startIcon={<Save />} onClick={handleSubmit}>
-          Perbarui Pesanan
+          Tambah Pekerjaan
         </Button>
       </Stack>
     </Stack>

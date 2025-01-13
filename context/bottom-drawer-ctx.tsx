@@ -23,7 +23,7 @@ export default function BottomDrawerContextProvider({
 }: {
   children: ReactNode;
 }) {
-  const [opened, setOpened] = useState<boolean>(true);
+  const [opened, setOpened] = useState<boolean>(false);
   const [content, setContent] = useState<JSX.Element | null>(null);
 
   function open() {
