@@ -13,6 +13,8 @@ import Modal from "@/comps/dialog";
 import ModalContextProvider from "@/context/modal-ctx";
 import SidebarContextProvider from "@/context/sidebar";
 import Sidebar from "@/comps/sidebar";
+import BottomDrawerContextProvider from "@/context/bottom-drawer-ctx";
+import BottomDrawer from "@/comps/bottom-drawer";
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -32,11 +34,14 @@ export default function RootLayout({
         >
           <ModalContextProvider>
             <SidebarContextProvider>
-              <body>
-                <Modal />
-                <Sidebar />
-                {children}
-              </body>
+              <BottomDrawerContextProvider>
+                <body>
+                  <Modal />
+                  <Sidebar />
+                  <BottomDrawer />
+                  {children}
+                </body>
+              </BottomDrawerContextProvider>
             </SidebarContextProvider>
           </ModalContextProvider>
         </LocalizationProvider>

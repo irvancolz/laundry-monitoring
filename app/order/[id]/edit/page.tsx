@@ -16,11 +16,10 @@ import Select from "@/comps/select";
 import dayjs from "dayjs";
 import OrderNotFound from "@/comps/order-not-found";
 import { useModal } from "@/context/modal-ctx";
-import { date } from "@/utils/date";
 
 export default function Page() {
   const router = useRouter();
-  const { handleError, notif } = useModal();
+  const { handleError } = useModal();
   const [data, setData] = useState<Order | null>();
   const [branch, setBranch] = useState<Option[]>([]);
   const [services, setServices] = useState<LaundryService[]>([]);

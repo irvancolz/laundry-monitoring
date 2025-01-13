@@ -21,7 +21,7 @@ const menus: SidebarLink[] = [
   },
   {
     label: "Pekerjaan",
-    href: "/laundry/task",
+    href: "/laundry/tasks",
     icon: <GroupOutlined />,
   },
 ];
