@@ -6,6 +6,7 @@ import {
   OrderRequest,
   OrderTask,
   OrderTaskProgress,
+  OrderTaskRequest,
   ServiceTask,
 } from "@/type/laundry";
 
@@ -48,6 +49,9 @@ export interface OrderContract {
 
 export interface OrderTaskContract {
   getAll: () => Promise<OrderTask[]>;
+  create: (task: OrderTaskRequest) => Promise<OrderTask>;
+  update: (task: OrderTask) => Promise<OrderTask>;
+  delete: (task: OrderTask) => Promise<OrderTask>;
 }
 
 export interface LaundryBranchApiContract {
