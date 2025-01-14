@@ -79,11 +79,11 @@ export type OrderProgress = {
 
 export type OrderTask = {
   id: number;
-  order: number | null;
 } & TableMetaData &
   OrderTaskRequest;
 
 export type OrderTaskRequest = {
+  order: number | null;
   code: string | null;
   name: string | null;
   description: string | null;

@@ -23,6 +23,7 @@ async function create(task: OrderTaskRequest): Promise<OrderTask> {
     throw new Error("failed to check current existing task total");
 
   task.code = "TSK" + new String((existing.count || 0) + 1).padStart(3, "0");
+  task.order = (existing.count || 0) + 1;
   task.created_by = "PLACEHOLDER";
   task.created_at = date.currentTime();
 
@@ -58,7 +59,11 @@ async function update(task: OrderTask): Promise<OrderTask> {
 async function remove(task: OrderTask): Promise<OrderTask> {
   const { data, error } = await supabase
     .from(SUPABASE_TASK_TABLE)
-    .update({ deleted_at: date.currentTime(), deleted_by: "PLACEHOLDER" })
+    .update({
+      deleted_at: date.currentTime(),
+      deleted_by: "PLACEHOLDER",
+      is_deleted: true,
+    })
     .eq("id", task.id)
     .select()
     .single();

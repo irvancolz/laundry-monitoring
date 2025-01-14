@@ -33,7 +33,14 @@ function UpdateTaskForm({ task }: { task: OrderTask }) {
     drawer.close();
   }
 
-  async function handleSubmit() {
+  function handleSubmit() {
+    modal.confirm({
+      title: "perbarui pekerjaan",
+      onAccept: () => updateTask,
+    });
+  }
+
+  async function updateTask() {
     try {
       api.orderTask.update(payload);
       modal.notif("success", "pekerjaan berhasil ditambahkan");
