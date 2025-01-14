@@ -12,8 +12,7 @@ export default function BottomBar({ children }: { children: ReactNode }) {
         position: "sticky",
         left: 0,
         bottom: "1rem",
-        width: "100vw",
-        translate: "-1.5rem 1.5rem",
+        width: "100%",
         borderRadius: ".75rem .75rem 0 0",
       }}
     >
