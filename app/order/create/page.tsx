@@ -4,7 +4,7 @@ import Button from "@/comps/button";
 import Text from "@/comps/text";
 import TextInput from "@/comps/text-input";
 import { Close, Save } from "@mui/icons-material";
-import { Paper, Stack, TextareaAutosize } from "@mui/material";
+import { Paper, Stack } from "@mui/material";
 import DatePicker from "@/comps/datepicker";
 import Topbar from "@/comps/topbar";
 import { redirect, useRouter } from "next/navigation";
@@ -15,6 +15,8 @@ import { api } from "@/api";
 import Select from "@/comps/select";
 import dayjs from "dayjs";
 import { useModal } from "@/context/modal-ctx";
+import Textarea from "@/comps/textarea";
+import { date } from "@/utils/date";
 
 export default function Page() {
   const { handleError } = useModal();
@@ -71,14 +73,14 @@ export default function Page() {
     if (selectedService == null) return;
     const currentTime = dayjs();
     setService(() => selectedService);
-    const finish_expectation = currentTime
-      .add(selectedService.service_time_hour!, "h")
-      .format("YYYY-MM-DD HH:mm");
+    const finish_expectation = date.formatDateTime(
+      currentTime.add(selectedService.service_time_hour!, "h")
+    );
 
     setData((prev) => ({
       ...prev,
       service_id: newService,
-      created_at: currentTime.format("YYYY-MM-DD HH:mm"),
+      created_at: date.formatDateTime(currentTime),
       finish_expectation: finish_expectation,
       price: prev.qty! * selectedService.price!,
     }));
@@ -162,7 +164,7 @@ export default function Page() {
               onChange={(e) =>
                 setData((prev) => ({
                   ...prev,
-                  finish_expectation: e.format("YYYY-MM-DD HH:mm"),
+                  finish_expectation: date.formatDateTime(e),
                 }))
               }
             />
@@ -192,13 +194,13 @@ export default function Page() {
                   currency: "IDR",
                 }).format(totalPrice)}
           </Text>
-          <TextareaAutosize
+          <Textarea
             placeholder="catatan"
             value={data.notes!}
             onChange={(e) =>
               setData((prev) => ({ ...prev, notes: e.target.value }))
             }
-          ></TextareaAutosize>
+          />
         </Stack>
         <Paper sx={{ position: "sticky", bottom: 0 }}>
           <Stack gap=".5rem">

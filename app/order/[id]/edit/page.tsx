@@ -4,7 +4,7 @@ import Button from "@/comps/button";
 import Text from "@/comps/text";
 import TextInput from "@/comps/text-input";
 import { Close, Save } from "@mui/icons-material";
-import { Paper, Stack, TextareaAutosize } from "@mui/material";
+import { Paper, Stack } from "@mui/material";
 import DatePicker from "@/comps/datepicker";
 import Topbar from "@/comps/topbar";
 import { redirect, useParams, useRouter } from "next/navigation";
@@ -16,6 +16,8 @@ import Select from "@/comps/select";
 import dayjs from "dayjs";
 import OrderNotFound from "@/comps/order-not-found";
 import { useModal } from "@/context/modal-ctx";
+import Textarea from "@/comps/textarea";
+import { date } from "@/utils/date";
 
 export default function Page() {
   const router = useRouter();
@@ -119,9 +121,9 @@ export default function Page() {
     if (!selectedService) return;
     const currentTime = dayjs();
     setService(() => selectedService);
-    const finish_expectation = currentTime
-      .add(selectedService.service_time_hour!, "h")
-      .format("DD/MM/YYYY HH:mm:ss");
+    const finish_expectation = date.formatDateTime(
+      currentTime.add(selectedService.service_time_hour!, "h")
+    );
 
     if (data == null) return;
     setData(
@@ -129,7 +131,7 @@ export default function Page() {
         ({
           ...prev,
           type: selectedService.id,
-          created_at: currentTime.format("DD/MM/YYYY HH:mm:ss"),
+          created_at: date.formatDateTime(currentTime),
           finish_expectation,
           price: totalPrice,
         } as Order)
@@ -198,9 +200,6 @@ export default function Page() {
             <DatePicker
               label="tanggal selesai"
               value={dayjs(data.finish_expectation)}
-              onChange={(e) => {
-                console.log(e);
-              }}
               disablePast
             />
           </Stack>
@@ -230,13 +229,13 @@ export default function Page() {
                   currency: "IDR",
                 }).format(totalPrice)}
           </Text>
-          <TextareaAutosize
+          <Textarea
             placeholder="catatan"
             value={data.notes!}
             onChange={(e) =>
               setData((prev) => ({ ...prev, notes: e.target.value } as Order))
             }
-          ></TextareaAutosize>
+          />
         </Stack>
         <Paper sx={{ position: "sticky", bottom: 0 }}>
           <Stack gap=".5rem">

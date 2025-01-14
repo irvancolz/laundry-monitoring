@@ -4,12 +4,13 @@ import Button from "@/comps/button";
 import TaskCard from "@/comps/task-card";
 import Text from "@/comps/text";
 import TextInput from "@/comps/text-input";
+import Textarea from "@/comps/textarea";
 import Topbar from "@/comps/topbar";
 import { useBottomDrawer } from "@/context/bottom-drawer-ctx";
 import { useModal } from "@/context/modal-ctx";
 import { OrderTask, OrderTaskRequest } from "@/type/laundry";
 import { Close, Save } from "@mui/icons-material";
-import { Stack, TextareaAutosize } from "@mui/material";
+import { Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 
 function CreateTaskForm() {
@@ -51,13 +52,13 @@ function CreateTaskForm() {
             setPayload((prev) => ({ ...prev, name: e.target.value }))
           }
         />
-        <TextareaAutosize
+        <Textarea
           placeholder="deskripsi"
           value={payload.description!}
           onChange={(e) =>
             setPayload((prev) => ({ ...prev, description: e.target.value }))
           }
-        ></TextareaAutosize>
+        />
         <Text>* pekerjaan baru akan berada di urutan terbawah</Text>
       </Stack>
       <Stack gap=".5rem">

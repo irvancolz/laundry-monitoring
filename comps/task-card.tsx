@@ -8,7 +8,6 @@ import {
   MenuItem,
   MenuList,
   Stack,
-  TextareaAutosize,
 } from "@mui/material";
 import Text from "./text";
 import { MenuIcon } from "./icon/menu";
@@ -19,6 +18,7 @@ import { api } from "@/api";
 import { useBottomDrawer } from "@/context/bottom-drawer-ctx";
 import TextInput from "./text-input";
 import Button from "./button";
+import Textarea from "./textarea";
 
 function UpdateTaskForm({ task }: { task: OrderTask }) {
   const drawer = useBottomDrawer();
@@ -63,13 +63,13 @@ function UpdateTaskForm({ task }: { task: OrderTask }) {
             setPayload((prev) => ({ ...prev, name: e.target.value }))
           }
         />
-        <TextareaAutosize
+        <Textarea
           placeholder="deskripsi"
           value={payload.description!}
           onChange={(e) =>
             setPayload((prev) => ({ ...prev, description: e.target.value }))
           }
-        ></TextareaAutosize>
+        />
         <Text>* pekerjaan baru akan berada di urutan terbawah</Text>
       </Stack>
       <Stack gap=".5rem">
