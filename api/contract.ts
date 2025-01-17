@@ -1,3 +1,4 @@
+import { Employee, EmployeeRequest } from "@/type/employee";
 import {
   LaundryBranch,
   LaundryBranchRequest,
@@ -19,6 +20,7 @@ export interface ApiContract {
   orderTask: OrderTaskContract;
   serviceTask: LaundryServiceTaskContract;
   orderProgress: OrderProgressApiContract;
+  employee: EmployeeContract;
 }
 
 export interface LaundryServiceApiContract {
@@ -76,4 +78,11 @@ export interface LaundryServiceTaskContract {
   delete: (
     tasks: Pick<ServiceTask, "laundry_service_id" | "order_task_id">[]
   ) => Promise<ServiceTask[]>;
+}
+
+export interface EmployeeContract {
+  getAll: () => Promise<Employee[]>;
+  create: (task: EmployeeRequest) => Promise<Employee>;
+  update: (task: Employee) => Promise<Employee>;
+  delete: (task: Employee) => Promise<Employee>;
 }

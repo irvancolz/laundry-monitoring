@@ -34,6 +34,48 @@ export type Database = {
   }
   public: {
     Tables: {
+      employee: {
+        Row: {
+          contact: string | null
+          created_at: string | null
+          created_by: string | null
+          deleted_at: string | null
+          deleted_by: string | null
+          gender: Database["public"]["Enums"]["gender"] | null
+          id: number
+          is_deleted: boolean | null
+          name: string | null
+          updated_at: string | null
+          updated_by: string | null
+        }
+        Insert: {
+          contact?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          deleted_at?: string | null
+          deleted_by?: string | null
+          gender?: Database["public"]["Enums"]["gender"] | null
+          id?: never
+          is_deleted?: boolean | null
+          name?: string | null
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Update: {
+          contact?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          deleted_at?: string | null
+          deleted_by?: string | null
+          gender?: Database["public"]["Enums"]["gender"] | null
+          id?: never
+          is_deleted?: boolean | null
+          name?: string | null
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       laundry_branch: {
         Row: {
           address: string | null
@@ -387,6 +429,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
+      gender: "pria" | "wanita"
       laundry_order_status: "finished" | "onprogress" | "canceled"
       service_pricing_type: "weight" | "piece"
     }

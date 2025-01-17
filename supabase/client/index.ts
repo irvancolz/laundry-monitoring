@@ -7,6 +7,7 @@ import { orderTaskApi } from "./task";
 import { Database } from "@/database.types";
 import { serviceTaskApi } from "./service_task";
 import { orderProgressApi } from "./service_progress";
+import { employeeApi } from "./employee";
 
 export const supabaseApi: ApiContract = {
   laundryBranch: branchApi,
@@ -15,6 +16,7 @@ export const supabaseApi: ApiContract = {
   orderTask: orderTaskApi,
   serviceTask: serviceTaskApi,
   orderProgress: orderProgressApi,
+  employee: employeeApi,
 };
 
 export const supabase = createClient<Database>(

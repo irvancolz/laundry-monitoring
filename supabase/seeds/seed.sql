@@ -118,12 +118,13 @@ SET row_security = off;
 -- Data for Name: laundry_branch; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO "public"."laundry_branch" ("id", "name", "code", "is_washing_station", "address", "created_at", "created_by", "updated_at", "updated_by", "deleted_at", "deleted_by", "is_deleted") OVERRIDING SYSTEM VALUE VALUES
-	(1, 'Downtown Laundry', 'DL001', true, '123 Main Street, Downtown', '2024-12-19 20:31:06.118495+07', NULL, NULL, NULL, NULL, NULL, false),
-	(2, 'Uptown Laundry', 'UL002', false, '456 Elm Avenue, Uptown', '2024-12-19 20:31:06.118495+07', NULL, NULL, NULL, NULL, NULL, false),
-	(3, 'Midtown Collection', 'MC003', false, '789 Oak Lane, Midtown', '2024-12-19 20:31:06.118495+07', NULL, NULL, NULL, NULL, NULL, false),
-	(4, 'Westside Station', 'WS004', true, '321 Pine Street, Westside', '2024-12-19 20:31:06.118495+07', NULL, NULL, NULL, NULL, NULL, false),
-	(5, 'Eastside Pickup', 'EP005', false, '654 Maple Road, Eastside', '2024-12-19 20:31:06.118495+07', NULL, NULL, NULL, NULL, NULL, false);
+INSERT INTO "public"."laundry_branch" ("id", "name", "code", "contact", "open_hour", "close_hour", "is_washing_station", "address", "created_at", "created_by", "updated_at", "updated_by", "deleted_at", "deleted_by", "is_deleted") OVERRIDING SYSTEM VALUE VALUES
+	(4, 'Westside Station', 'WS004', NULL, NULL, NULL, true, '321 Pine Street, Westside', '2024-12-19 20:31:06.118495+07', NULL, NULL, NULL, NULL, NULL, false),
+	(5, 'Eastside Pickup', 'EP005', NULL, NULL, NULL, false, '654 Maple Road, Eastside', '2024-12-19 20:31:06.118495+07', NULL, NULL, NULL, NULL, NULL, false),
+	(3, 'Midtown Collection', 'MC003', NULL, NULL, NULL, false, '789 Oak Lane, Midtown', '2024-12-19 20:31:06.118495+07', NULL, '2025-01-14 14:34:49+07', 'PLACEHOLDER', NULL, NULL, false),
+	(6, 'cabang baru', 'BRN006', '12345678', NULL, NULL, true, 'jl 123', '2025-01-14 14:29:07+07', 'PLACEHOLDER', NULL, NULL, NULL, NULL, false),
+	(2, 'Uptown Laundry', 'UL002', NULL, '07:00', '17:20', false, '456 Elm Avenue, Uptown', '2024-12-19 20:31:06.118495+07', NULL, '2025-01-14 14:47:33+07', 'PLACEHOLDER', NULL, NULL, false),
+	(1, 'Downtown Laundry', 'DL001', NULL, '07:15', '19:00', true, '123 Main Street, Downtown', '2024-12-19 20:31:06.118495+07', NULL, '2025-01-14 14:56:42+07', 'PLACEHOLDER', NULL, NULL, false);
 
 
 --
@@ -166,12 +167,14 @@ INSERT INTO "public"."laundry_order" ("id", "code", "branch_id", "branch_name", 
 --
 
 INSERT INTO "public"."order_task" ("id", "name", "code", "order", "description", "created_at", "created_by", "updated_at", "updated_by", "deleted_at", "deleted_by", "is_deleted") OVERRIDING SYSTEM VALUE VALUES
-	(1, 'Penerimaan Pesanan', 'OT001', 0, 'Pesanan Anda telah kami terima dan sedang kami proses.', '2024-12-19 20:31:06.12333+07', NULL, NULL, NULL, NULL, NULL, false),
 	(2, 'Penyortiran', 'OT002', 1, 'Pakaian Anda sedang kami sortir berdasarkan jenis dan warnanya.', '2024-12-19 20:31:06.12333+07', NULL, NULL, NULL, NULL, NULL, false),
 	(3, 'Pencucian', 'OT003', 2, 'Pakaian Anda sedang dicuci menggunakan metode yang sesuai.', '2024-12-19 20:31:06.12333+07', NULL, NULL, NULL, NULL, NULL, false),
 	(5, 'Penyetrikaan', 'OT005', 4, 'Pakaian Anda sedang disetrika, sebentar lagi siap untuk diambil.', '2024-12-19 20:31:06.12333+07', NULL, NULL, NULL, NULL, NULL, false),
 	(6, 'Pesanan Siap Diambil', 'OT006', 5, 'Pakaian Anda telah selesai dan siap untuk diambil.', '2024-12-19 20:31:06.12333+07', NULL, NULL, NULL, NULL, NULL, false),
-	(4, 'Pengeringan', 'OT004', 3, 'Pakaian Anda sedang dalam proses pengeringan.', '2024-12-19 20:31:06.12333+07', NULL, NULL, NULL, NULL, NULL, false);
+	(4, 'Pengeringan', 'OT004', 3, 'Pakaian Anda sedang dalam proses pengeringan.', '2024-12-19 20:31:06.12333+07', NULL, NULL, NULL, NULL, NULL, false),
+	(8, 'pekerjaan baru berubah', 'TSK007', 7, 'pekerjaan ini tidak diperlukan lagi ', '2025-01-14 10:18:29+07', 'PLACEHOLDER', '2025-01-14 10:20:00+07', 'PLACEHOLDER', '2025-01-14 10:21:41+07', 'PLACEHOLDER', true),
+	(9, 'pekerjaan baru lagi', 'TSK008', 8, 'nanti di hapus aja lagi', '2025-01-14 10:22:20+07', 'PLACEHOLDER', NULL, NULL, NULL, NULL, false),
+	(1, 'Penerimaan Pesanan', 'OT001', 0, 'Pesanan Anda telah kami terima dan sedang kami proses.', '2025-01-07 13:45:34+07', NULL, NULL, NULL, NULL, NULL, false);
 
 
 --
@@ -322,7 +325,7 @@ SELECT pg_catalog.setval('"pgsodium"."key_key_id_seq"', 1, false);
 -- Name: laundry_branch_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."laundry_branch_id_seq"', 5, true);
+SELECT pg_catalog.setval('"public"."laundry_branch_id_seq"', 6, true);
 
 
 --
@@ -343,7 +346,7 @@ SELECT pg_catalog.setval('"public"."laundry_service_task_id_seq"', 73, true);
 -- Name: order_task_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."order_task_id_seq"', 7, true);
+SELECT pg_catalog.setval('"public"."order_task_id_seq"', 9, true);
 
 
 --
